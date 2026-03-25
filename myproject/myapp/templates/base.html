@@ -1,0 +1,808 @@
+{% load static %}
+<link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600&display=swap"
+    rel="stylesheet">
+<!-- ── PREMIUM NAV BAR ── -->
+<style>
+    :root {
+        --forest-base: #1a3a2a;
+        --sage-base: #5a8a5e;
+        --mint-base: #a8d5a2;
+        --cream-base: #f5f0e8;
+        --white-base: #fdfcf8;
+        --text-base: #1a2418;
+        --muted-base: #6b7c6a;
+    }
+
+    /* ── NAV ── */
+    .unified-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.2rem 4rem;
+        background: transparent;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'DM Sans', 'Jost', sans-serif;
+    }
+
+    .unified-nav.scrolled {
+        padding: 0.8rem 4rem;
+        background: rgba(253, 252, 248, 0.8);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(26, 58, 42, 0.05);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    }
+
+    .nav-logo {
+        font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--cream-base);
+        /* Better contrast on dark hero */
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .unified-nav.scrolled .nav-logo {
+        color: var(--forest-base);
+    }
+
+    .nav-logo span {
+        color: var(--mint-base);
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: var(--cream-base);
+        /* Better contrast on dark hero */
+        font-size: 0.92rem;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+        transition: all 0.3s ease;
+        opacity: 0.85;
+        position: relative;
+    }
+
+    .unified-nav.scrolled .nav-links a {
+        color: var(--forest-base);
+        opacity: 0.95;
+    }
+
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1.5px;
+        background: var(--mint-base);
+        transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        opacity: 1;
+        color: var(--mint-base);
+    }
+
+    .unified-nav.scrolled .nav-links a:hover {
+        color: var(--sage-base);
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .nav-cart-btn {
+        background: var(--forest-base);
+        color: var(--white-base);
+        border: none;
+        cursor: pointer;
+        padding: 0.6rem 1.4rem;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(26, 58, 42, 0.1);
+        text-decoration: none;
+    }
+
+    .nav-cart-btn:hover {
+        background: var(--sage-base);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(26, 58, 42, 0.15);
+    }
+
+    .cart-count {
+        background: var(--mint-base);
+        color: var(--forest-base);
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-user-info {
+        font-weight: 600;
+        color: var(--cream-base);
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+
+    .unified-nav.scrolled .nav-user-info {
+        color: var(--forest-base);
+    }
+
+    .nav-logout-btn {
+        background: transparent;
+        color: var(--cream-base);
+        border: 1.5px solid var(--cream-base);
+        padding: 0.5rem 1.2rem;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .unified-nav.scrolled .nav-logout-btn {
+        color: var(--forest-base);
+        border-color: var(--forest-base);
+    }
+
+    .nav-logout-btn:hover {
+        background: var(--mint-base);
+        color: var(--forest-base);
+        border-color: var(--mint-base);
+    }
+
+    .nav-cta-btn {
+        background: var(--mint-base);
+        color: var(--forest-base);
+        padding: 0.6rem 1.6rem;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(26, 58, 42, 0.05);
+    }
+
+    /* Dropdown Styles */
+    .user-dropdown {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--white-base);
+        border: 1px solid var(--cream-base);
+        border-radius: 12px;
+        min-width: 160px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        display: none;
+        flex-direction: column;
+        padding: 0.5rem;
+        margin-top: 10px;
+        z-index: 1002;
+    }
+
+    .user-dropdown.active .dropdown-menu {
+        display: flex;
+    }
+
+    .dropdown-menu a {
+        padding: 0.8rem 1rem;
+        text-decoration: none;
+        color: var(--text-base);
+        font-size: 0.85rem;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+        background: var(--cream-base);
+        color: var(--forest-base);
+    }
+
+    /* ── TRENDING CHATBOT ICON ── */
+    .chatbot-btn {
+        position: fixed;
+        bottom: 35px;
+        right: 35px;
+        width: 65px;
+        height: 65px;
+        background: linear-gradient(135deg, var(--forest-base), var(--sage-base));
+        color: var(--white-base);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2000;
+        box-shadow: 0 10px 30px rgba(26, 58, 42, 0.4);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Outer Glow Pulse */
+    .chatbot-btn::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: var(--mint-base);
+        border-radius: 50%;
+        z-index: -1;
+        opacity: 0.5;
+        animation: chatPulse 2.5s infinite ease-out;
+    }
+
+    @keyframes chatPulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+
+        100% {
+            transform: scale(1.8);
+            opacity: 0;
+        }
+    }
+
+    /* Floating Animation */
+    @keyframes chatFloat {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .chatbot-btn {
+        animation: chatFloat 3s infinite ease-in-out;
+    }
+
+    .chatbot-btn:hover {
+        transform: scale(1.1) rotate(15deg);
+        box-shadow: 0 15px 45px rgba(26, 58, 42, 0.6);
+        background: linear-gradient(135deg, var(--sage-base), var(--mint-base));
+        animation-play-state: paused;
+    }
+
+    .chatbot-btn svg {
+        transition: transform 0.3s ease;
+    }
+
+    .chatbot-btn:hover svg {
+        transform: scale(1.2);
+    }
+
+    .chatbot-drawer {
+        position: fixed;
+        top: 0;
+        right: -50%;
+        width: 40%;
+        height: 100%;
+        background: var(--white-base);
+        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
+        z-index: 2001;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chatbot-drawer.open {
+        right: 0;
+    }
+
+    @media (max-width: 900px) {
+        .chatbot-drawer {
+            width: 80%;
+            right: -80%;
+        }
+    }
+
+    .chatbot-header {
+        background: var(--forest-base);
+        color: var(--white-base);
+        padding: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .close-chat {
+        cursor: pointer;
+        font-size: 1.5rem;
+        opacity: 0.7;
+    }
+
+    .close-chat:hover {
+        opacity: 1;
+    }
+
+    .chatbot-body {
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background: var(--cream-base);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--sage-base) transparent;
+    }
+
+    .chat-message {
+        max-width: 85%;
+        padding: 1rem 1.2rem;
+        border-radius: 18px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    }
+
+    .message-ai {
+        align-self: flex-start;
+        background: var(--white-base);
+        color: var(--forest-base);
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .message-user {
+        align-self: flex-end;
+        background: var(--forest-base);
+        color: var(--white-base);
+        border-bottom-right-radius: 4px;
+    }
+
+    .chat-options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 15px;
+        align-self: flex-start;
+        max-width: 85%;
+    }
+
+    .chat-option-btn {
+        background: #f0f7ef;
+        border: 1px solid #c9e0c5;
+        color: #1a3a2a;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+    }
+
+    .chat-option-btn:hover {
+        background: #1a3a2a;
+        color: white;
+    }
+
+    .chatbot-footer {
+        padding: 1.5rem;
+        background: var(--white-base);
+        border-top: 1px solid var(--cream-base);
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .chat-input {
+        flex: 1;
+        background: var(--cream-base);
+        border: 1px solid var(--sand);
+        padding: 0.8rem 1.2rem;
+        border-radius: 100px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .chat-input:focus {
+        border-color: var(--sage-base);
+    }
+
+    .send-btn {
+        width: 45px;
+        height: 45px;
+        background: var(--forest-base);
+        color: var(--white-base);
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .send-btn:hover {
+        transform: scale(1.1);
+        background: var(--sage-base);
+    }
+
+    /* Mobile Toggle */
+    .nav-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .nav-toggle span {
+        width: 25px;
+        height: 2px;
+        background: var(--forest-base);
+        transition: all 0.3s ease;
+    }
+
+    @media (max-width: 1024px) {
+        .unified-nav {
+            padding: 1.2rem 2rem;
+        }
+
+        .nav-links {
+            display: none;
+            /* Add mobile menu logic if needed */
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .nav-links,
+        .nav-right a:not(.nav-cart-btn) {
+            display: none;
+        }
+
+        .unified-nav {
+            padding: 1rem 1.5rem;
+        }
+    }
+</style>
+
+<nav class="unified-nav" id="mainNavbar">
+    <a href="/" class="nav-logo">🌿 Verd<span>ana</span></a>
+
+    <ul class="nav-links">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'product' %}">Shop</a></li>
+        <li><a href="{% url 'carbon_calculator' %}">Carbon Calculator</a></li>
+        <li><a href="{% url 'request_pickup' %}">Recycling Pickup</a></li>
+
+
+        {% if user_role == 'Admin' %}
+        <li><a href="{% url 'admin_dashboard' %}" style="color: var(--sage-base); font-weight: 700;">📊 Dashboard</a>
+        </li>
+        {% endif %}
+        <li><a href="/#impact">Our Impact</a></li>
+        <!-- <li><a href="/#stories">Stories</a></li> -->
+        <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+    </ul>
+
+    <div class="nav-right">
+        {% if request.session.user_id %}
+        <a href="{% url 'view_cart' %}" class="nav-cart-btn">
+            🛒 Cart <span class="cart-count">{{ cart_count }}</span>
+        </a>
+        <div class="user-dropdown">
+            <div class="nav-user-info" id="dropdownToggle" style="display: flex; align-items: center; gap: 10px;">
+                {% if request.session.user_image %}
+                <img src="{{ request.session.user_image }}" alt="Profile"
+                    style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--sage-base);">
+                {% else %}
+                <div
+                    style="width: 30px; height: 30px; border-radius: 50%; background: var(--cream-base); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: 1.5px solid var(--sage-base);">
+                    👤</div>
+                {% endif %}
+                <span>Hi, {{ request.session.user_name }}</span> <span id="arrowIcon"
+                    style="font-size: 0.7rem;">▾</span>
+            </div>
+            <div class="dropdown-menu">
+                <a href="{% url 'my_profile' %}">👤 My Profile</a>
+                <a href="{% url 'my_orders' %}">📦 My Orders</a>
+                <a href="{% url 'my_pickups' %}">♻️ My Pickups</a>
+                {% if user_role == 'Admin' %}
+                <a href="{% url 'admin_manage_pickups' %}" style="color: #5a8a5e; font-weight: 700;">🚛 Manage
+                    Pickups</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">🚪 Logout</a>
+
+            </div>
+        </div>
+        {% else %}
+        <a href="{% url 'signin' %}" class="nav-cta-btn">Sign In</a>
+        {% endif %}
+    </div>
+
+    <div class="nav-toggle" id="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- PREMIUM TOAST NOTIFICATIONS -->
+{% if messages %}
+<style>
+    .toast-item {
+        min-width: 300px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transform: translateX(120%);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: auto;
+    }
+
+    .toast-item.success {
+        border-left: 5px solid #4e7e55;
+    }
+
+    .toast-item.error {
+        border-left: 5px solid #c0392b;
+    }
+</style>
+<div id="toast-container"
+    style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none;">
+    {% for message in messages %}
+    <div class="toast-item {{ message.tags }}">
+        <div style="font-size: 1.5rem;">
+            {% if message.tags == 'success' %}🌿{% else %}⚠️{% endif %}
+        </div>
+        <div style="flex: 1;">
+            <div style="font-weight: 600; font-size: 0.9rem; color: #18301f;">
+                {% if message.tags == 'success' %}Success{% else %}Error{% endif %}
+            </div>
+            <div style="font-size: 0.85rem; color: #4e7e55; margin-top: 2px;">{{ message }}</div>
+        </div>
+        <button onclick="this.parentElement.style.transform = 'translateX(120%)'"
+            style="background: none; border: none; cursor: pointer; color: #7a8c76; font-size: 1.2rem;">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toasts = document.querySelectorAll('.toast-item');
+        toasts.forEach((toast, index) => {
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+
+                // Auto hide
+                setTimeout(() => {
+                    toast.style.transform = 'translateX(120%)';
+                }, 5000 + (index * 500));
+            }, 100 + (index * 200));
+        });
+    });
+</script>
+{% endif %}
+
+<!-- CHATBOT UI -->
+<div class="chatbot-btn" id="openChat">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+</div>
+
+<div class="chatbot-drawer" id="chatDrawer">
+    <div class="chatbot-header">
+        <div style="font-weight:700; font-size:1.2rem;">Verdana Assistant 🌿</div>
+        <div class="close-chat" id="closeChat">&times;</div>
+    </div>
+    <div class="chatbot-body" id="chatBody">
+        <div class="chat-message message-ai">
+            Hello! I'm your Verdana assistant. How can I help you live more sustainably today? 🌿
+        </div>
+        <div class="chat-options-container" id="chatOptions">
+            <button class="chat-option-btn" onclick="sendQuickReply('Delivery Details')">🚚 Delivery Details</button>
+            <button class="chat-option-btn" onclick="sendQuickReply('My Order Details')">📦 My Order Details</button>
+            <button class="chat-option-btn" onclick="sendQuickReply('Product Details')">🌿 Explore Eco Products</button>
+        </div>
+    </div>
+    <div class="chatbot-footer">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." autocomplete="off">
+        <button class="send-btn" id="sendBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    const chatDrawer = document.getElementById('chatDrawer');
+    const openChat = document.getElementById('openChat');
+    const closeChat = document.getElementById('closeChat');
+
+    if (openChat) {
+        openChat.addEventListener('click', () => {
+            chatDrawer.classList.add('open');
+        });
+    }
+
+    if (closeChat) {
+        closeChat.addEventListener('click', () => {
+            chatDrawer.classList.remove('open');
+        });
+    }
+
+    // Chat logic
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const chatBody = document.getElementById('chatBody');
+
+    function sendQuickReply(text) {
+        const input = document.getElementById('chatInput');
+        if (input) {
+            input.value = text;
+            sendMessage();
+        }
+    }
+
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // Add user message
+        const userMsg = document.createElement('div');
+        userMsg.className = 'chat-message message-user';
+        userMsg.innerText = text;
+        chatBody.appendChild(userMsg);
+
+        chatInput.value = '';
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Add loading Indicator
+        const loadingMsg = document.createElement('div');
+        loadingMsg.className = 'chat-message message-ai';
+        loadingMsg.innerText = "...";
+        chatBody.appendChild(loadingMsg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // REAL Fetch call to OpenAI via Backend
+        fetch('/chat-query', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: text })
+        })
+            .then(response => response.json())
+            .then(data => {
+                chatBody.removeChild(loadingMsg);
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'chat-message message-ai';
+                aiMsg.innerText = data.response;
+                chatBody.appendChild(aiMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            })
+            .catch(error => {
+                if (chatBody.contains(loadingMsg)) chatBody.removeChild(loadingMsg);
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chat-message message-ai';
+                errorMsg.innerText = "I'm having a bit of trouble connecting to my brain right now. Please try again! 🌿";
+                chatBody.appendChild(errorMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            });
+    }
+
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendMessage);
+    }
+
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    }
+
+    // Dropdown Logic
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const userDropdown = document.querySelector('.user-dropdown');
+    const arrowIcon = document.getElementById('arrowIcon');
+
+    if (dropdownToggle) {
+        dropdownToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+            arrowIcon.innerText = userDropdown.classList.contains('active') ? '▴' : '▾';
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (userDropdown && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('active');
+            arrowIcon.innerText = '▾';
+        }
+    });
+
+    // Close dropdown when clicking menu items
+    const dropdownLinks = document.querySelectorAll('.dropdown-menu a');
+    dropdownLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            userDropdown.classList.remove('active');
+            arrowIcon.innerText = '▾';
+        });
+    });
+</script>
+
+<script>
+    (function () {
+        const navbar = document.getElementById('mainNavbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    })();
+</script>

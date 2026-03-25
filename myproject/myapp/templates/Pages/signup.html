@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdana — Register</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'Styles/signup.css' %}" />
+
+</head>
+
+<body>
+  <!-- Navbar Removed -->
+
+  <!-- FORM AREA -->
+  <div class="form-area">
+    <div class="form-top-brand">🌿 Verd<span>ana</span></div>
+
+    <div class="form-header">
+      <h1>Create your <em>account</em></h1>
+      <p>Already have one? <a href="{% url 'signin' %}">Sign in →</a></p>
+    </div>
+
+    <div class="divider">or register with email</div>
+
+    <form id="registerForm" method="POST" action="{% url 'signup' %}" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="row-2">
+        <div class="input-group">
+          <label for="fname">First Name</label>
+          <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input type="text" id="fname" name="fname" placeholder="Arjun" required />
+            <span class="valid-icon">✓</span>
+          </div>
+          <div class="error-msg" id="fnameErr">First name is required.</div>
+        </div>
+        <div class="input-group">
+          <label for="lname">Last Name</label>
+          <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input type="text" id="lname" name="lname" placeholder="Kumar" required />
+            <span class="valid-icon">✓</span>
+          </div>
+          <div class="error-msg" id="lnameErr">Last name is required.</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <span class="icon">✉️</span>
+          <input type="email" id="email" name="email" placeholder="you@example.com" />
+          <span class="valid-icon">✓</span>
+        </div>
+        <div class="error-msg" id="emailErr">Please enter a valid email address.</div>
+      </div>
+
+      <div class="row-2">
+        <div class="input-group">
+          <label for="phone">Phone Number</label>
+          <div class="input-wrap">
+            <span class="icon">📱</span>
+            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" />
+            <span class="valid-icon">✓</span>
+          </div>
+          <div class="error-msg" id="phoneErr">Enter a valid phone number.</div>
+        </div>
+        <div class="input-group">
+          <label for="city">City</label>
+          <div class="input-wrap">
+            <span class="icon">📍</span>
+            <input type="text" id="city" name="city" placeholder="Chennai" />
+            <span class="valid-icon">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="profile_img">Profile Image <span
+            style="font-size: 0.75rem; color: #999; font-weight: 400;">(Optional)</span></label>
+        <div class="input-wrap">
+          <span class="icon">🖼️</span>
+          <input type="file" id="profile_img" name="profile_img" accept="image/*" />
+          <span class="valid-icon">✓</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">
+          Password
+        </label>
+        <div class="input-wrap">
+          <span class="icon">🔒</span>
+          <input type="password" id="password" name="password" placeholder="Create a strong password"
+            autocomplete="new-password" />
+          <button type="button" class="toggle-pw" id="togglePw">👁️</button>
+        </div>
+        <div class="pw-strength" id="pwStrength" style="display:none">
+          <div class="strength-bar">
+            <div class="s-seg" id="s1"></div>
+            <div class="s-seg" id="s2"></div>
+            <div class="s-seg" id="s3"></div>
+            <div class="s-seg" id="s4"></div>
+          </div>
+          <div class="strength-label" id="sLabel">Strength: —</div>
+        </div>
+        <div class="error-msg" id="passErr">Password must be at least 8 characters.</div>
+      </div>
+
+      <div class="input-group">
+        <label for="confirm">Confirm Password</label>
+        <div class="input-wrap">
+          <span class="icon">🔐</span>
+          <input type="password" id="confirm" name="confirm_pass" placeholder="Repeat your password"
+            autocomplete="new-password" />
+          <span class="valid-icon">✓</span>
+        </div>
+        <div class="error-msg" id="confirmErr">Passwords do not match.</div>
+      </div>
+
+      <div class="terms-row">
+        <input type="checkbox" id="terms" name="terms" />
+        <label for="terms">I agree to the <a href="#">Terms of Service</a> & <a href="#">Privacy Policy</a>. I also join
+          the Verdana Green Pledge 🌱</label>
+      </div>
+      <div class="error-msg" id="termsErr" style="margin-top:-0.8rem;margin-bottom:0.8rem">Please accept the terms to
+        continue.</div>
+
+      <button type="submit" class="btn-submit">🌿 Create My Eco Account</button>
+    </form>
+
+    <div class="login-link">Already a member? <a href="{% url 'signin' %}">Sign in here →</a></div>
+
+    <div class="eco-note">
+      🌳 Registering today plants your first tree — free, in your name.
+    </div>
+  </div>
+
+  <!-- DECO PANEL -->
+  <div class="deco-panel">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="deco-inner">
+      <div class="deco-brand">🌿 Verd<span>ana</span></div>
+
+      <h2>Join the <em>green</em> revolution today</h2>
+      <p>Be part of a growing community that's changing how the world shops — sustainably, consciously, beautifully.</p>
+
+      <div class="perks">
+        <div class="perk">
+          <div class="perk-icon">🌳</div>
+          <div class="perk-text">
+            <div class="pt">Free Tree on Signup</div>
+            <div class="pd">We plant a tree in your name the moment you join.</div>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🎁</div>
+          <div class="perk-text">
+            <div class="pt">15% Welcome Discount</div>
+            <div class="pd">Exclusive offer on your very first order.</div>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">📊</div>
+          <div class="perk-text">
+            <div class="pt">Personal Impact Dashboard</div>
+            <div class="pd">Track your CO₂ saved, trees planted & plastic avoided.</div>
+          </div>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">✨</div>
+          <div class="perk-text">
+            <div class="pt">Early Access to New Products</div>
+            <div class="pd">Members get first look at every new sustainable launch.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="join-widget">
+        <div class="jw-label">Community Goal — 200K Members</div>
+        <div class="jw-bar-bg">
+          <div class="jw-bar-fill"></div>
+        </div>
+        <div class="jw-stats">
+          <span><strong>180K</strong> joined</span>
+          <span>20K to go</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-icon">🌿</div>
+    <h2>Welcome to Verdana!</h2>
+    <p>Your eco account is ready. Your first tree is already being planted in your name.</p>
+    <div class="success-perks">
+      <div class="sp">
+        <div class="si">🌳</div>
+        <div class="st">1 Tree</div>
+        <div class="sd">Planted for you</div>
+      </div>
+      <div class="sp">
+        <div class="si">🎁</div>
+        <div class="st">15% Off</div>
+        <div class="sd">First order</div>
+      </div>
+      <div class="sp">
+        <div class="si">📊</div>
+        <div class="st">Dashboard</div>
+        <div class="sd">Activated</div>
+      </div>
+    </div>
+    <a href="{% url 'signin' %}" class="btn-go"
+      style="display: inline-block; text-decoration: none; text-align: center;">Go to Sign In →</a>
+  </div>
+
+  <script>
+    // Toggle password
+    const pwField = document.getElementById('password');
+    document.getElementById('togglePw').addEventListener('click', function () {
+      const show = pwField.type === 'password';
+      pwField.type = show ? 'text' : 'password';
+      this.textContent = show ? '🙈' : '👁️';
+    });
+
+    // Password strength
+    pwField.addEventListener('input', function () {
+      const val = this.value;
+      const strength = document.getElementById('pwStrength');
+      const segs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
+      const label = document.getElementById('sLabel');
+
+      if (!val) { strength.style.display = 'none'; return; }
+      strength.style.display = 'block';
+
+      segs.forEach(s => { s.className = 's-seg'; });
+
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const classes = ['weak', 'medium', 'strong', 'great'];
+      const labels = ['Weak', 'Fair', 'Strong', 'Great'];
+      for (let i = 0; i < score; i++) segs[i].classList.add(classes[score - 1]);
+      label.textContent = 'Strength: ' + (labels[score - 1] || '');
+    });
+
+    // Inline validation
+    function validateField(input, condition, errId) {
+      const err = document.getElementById(errId);
+      if (condition) {
+        input.classList.remove('error-field'); input.classList.add('valid-field');
+        if (err) { err.classList.remove('show'); }
+        return true;
+      } else {
+        input.classList.remove('valid-field'); input.classList.add('error-field');
+        if (err) { err.classList.add('show'); }
+        return false;
+      }
+    }
+
+    document.getElementById('fname').addEventListener('blur', function () {
+      validateField(this, this.value.trim().length > 0, 'fnameErr');
+    });
+    document.getElementById('lname').addEventListener('blur', function () {
+      validateField(this, this.value.trim().length > 0, 'lnameErr');
+    });
+    document.getElementById('email').addEventListener('blur', function () {
+      validateField(this, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value), 'emailErr');
+    });
+    document.getElementById('phone').addEventListener('blur', function () {
+      validateField(this, /^[\d\s\+\-]{8,15}$/.test(this.value.trim()), 'phoneErr');
+    });
+    document.getElementById('confirm').addEventListener('input', function () {
+      validateField(this, this.value === pwField.value && this.value.length > 0, 'confirmErr');
+    });
+  </script>
+
+  <!-- PREMIUM TOAST NOTIFICATIONS for standalone pages -->
+  {% if messages %}
+  <style>
+    .toast-item {
+      min-width: 300px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(120%);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: auto;
+    }
+
+    .toast-item.success {
+      border-left: 5px solid #4e7e55;
+    }
+
+    .toast-item.error {
+      border-left: 5px solid #c0392b;
+    }
+
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      pointer-events: none;
+    }
+  </style>
+  <div id="toast-container">
+    {% for message in messages %}
+    <div class="toast-item {{ message.tags }}">
+      <div style="font-size: 1.5rem;">
+        {% if message.tags == 'success' %}🌿{% else %}⚠️{% endif %}
+      </div>
+      <div style="flex: 1;">
+        <div style="font-weight: 600; font-size: 0.9rem; color: #18301f;">
+          {% if message.tags == 'success' %}Success{% else %}Error{% endif %}
+        </div>
+        <div style="font-size: 0.85rem; color: #4e7e55; margin-top: 2px;">{{ message }}</div>
+      </div>
+      <button onclick="this.parentElement.style.transform = 'translateX(120%)'"
+        style="background: none; border: none; cursor: pointer; color: #7a8c76; font-size: 1.2rem;">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toasts = document.querySelectorAll('.toast-item');
+      toasts.forEach((toast, index) => {
+        setTimeout(() => {
+          toast.style.transform = 'translateX(0)';
+          setTimeout(() => { toast.style.transform = 'translateX(120%)'; }, 5000 + (index * 500));
+        }, 100 + (index * 200));
+      });
+    });
+  </script>
+  {% endif %}
+</body>
+
+</html>

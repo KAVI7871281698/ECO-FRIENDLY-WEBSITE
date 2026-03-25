@@ -1,0 +1,127 @@
+.pickup-section {
+    padding: 120px 20px 60px;
+    background: var(--cream-bg);
+    min-height: 100vh;
+}
+
+.pickup-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white-card);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(26, 58, 42, 0.08);
+}
+
+.pickup-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--forest-primary);
+    font-size: 2.22rem;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid var(--mint-accent);
+    display: inline-block;
+}
+
+/* HIGH-GLOW SUBMIT BUTTON */
+.submit-pickup {
+    background: #1a3a2a;
+    color: #fff;
+    padding: 18px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%;
+    margin-top: 15px;
+    box-shadow: 0 10px 20px rgba(26, 58, 42, 0.2);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.submit-pickup:hover {
+    background: #5a8a5e;
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(26, 58, 42, 0.3);
+}
+
+.pickup-card {
+    background: #fdfcf8;
+    border: 1px solid rgba(26, 58, 42, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pending { background: #fee2e2; color: #991b1b; }
+.status-assigned { background: #fef9c3; color: #854d0e; }
+.status-completed { background: #dcfce7; color: #166534; }
+.status-cancelled { background: #f3f4f6; color: #374151; }
+
+.pickup-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.pickup-table th, .pickup-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(26, 58, 42, 0.05);
+}
+
+.pickup-table th {
+    color: var(--sage-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.pickup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pickup-form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-family: 'Jost', sans-serif;
+    transition: all 0.3s;
+}
+
+
+
+/* Admin Specific */
+.admin-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+}
+
+.update-status-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}

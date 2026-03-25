@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .faq-section {
+        padding: 120px 5% 100px;
+        min-height: 100vh;
+        background: #fdfcf8;
+        font-family: 'Jost', sans-serif;
+    }
+
+    .faq-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .faq-top {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .faq-top h6 {
+        color: #5a8a5e;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    .faq-top h1 {
+        font-family: 'Playfair Display';
+        font-size: 3.8rem;
+        color: #1a3a2a;
+        margin: 0;
+        line-height: 1.1;
+    }
+
+    .faq-top p {
+        color: #6b7c6a;
+        max-width: 700px;
+        margin: 25px auto 0;
+        font-size: 1.2rem;
+        line-height: 1.8;
+    }
+
+    .faq-category-label {
+        font-family: 'Playfair Display';
+        font-size: 1.8rem;
+        color: #1a3a2a;
+        margin: 60px 0 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e8f0e6;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .faq-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .faq-item {
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(26, 58, 42, 0.04);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+
+    .faq-item:hover {
+        box-shadow: 0 15px 50px rgba(26, 58, 42, 0.06);
+        border-color: rgba(90, 138, 94, 0.2);
+    }
+
+    details {
+        padding: 0;
+    }
+
+    summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 30px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #1a3a2a;
+        transition: color 0.3s;
+    }
+
+    summary:hover {
+        color: #5a8a5e;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-content {
+        padding: 0 40px 40px;
+        color: #4a5a4a;
+        line-height: 1.9;
+        font-size: 1.05rem;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .faq-icon {
+        width: 32px;
+        height: 32px;
+        background: #f0f7ef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5a8a5e;
+        transition: all 0.4s;
+        font-size: 1.4rem;
+    }
+
+    details[open] .faq-icon {
+        background: #1a3a2a;
+        color: white;
+        transform: rotate(45deg);
+    }
+
+    .cta-box {
+        margin-top: 100px;
+        background: linear-gradient(135deg, #1a3a2a, #2d5236);
+        padding: 80px 50px;
+        border-radius: 40px;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-box::after {
+        content: '🌿';
+        position: absolute;
+        font-size: 15rem;
+        bottom: -50px;
+        right: -30px;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .cta-box h2 {
+        font-family: 'Playfair Display';
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .cta-box p {
+        opacity: 0.9;
+        margin-bottom: 40px;
+        font-size: 1.1rem;
+    }
+
+    .btn-contact {
+        display: inline-block;
+        padding: 18px 45px;
+        background: #a8d5a2;
+        color: #1a3a2a;
+        text-decoration: none;
+        border-radius: 100px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+    }
+
+    .btn-contact:hover {
+        background: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<section class="faq-section">
+    <div class="faq-container">
+
+        <div class="faq-top">
+            <h6>Knowledge Base</h6>
+            <h1>Conscious shopping, <em>simplified</em>.</h1>
+            <p>At Verdana, transparency is the root of our philosophy. We believe that informed choices are the most
+                powerful tool for planetary change. Here is everything you need to know about our ecosystem.</p>
+        </div>
+
+        <!-- ── PRODUCTS & SUSTAINABILITY ── -->
+        <div class="faq-category-label">
+            <span>🌿</span> Products & Sustainability
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-item">
+                <details>
+                    <summary>
+                        What defines the "Verdana Standard" for eco-friendly products?
+                        <div class="faq-icon">+</div>
+                    </summary>
+                    <div class="faq-content">
+                        <p>Every product hosted on Verdana must undergo a rigorous 3-step verification process known as
+                            our "Green Lifecycle Audit." First, we evaluate the <strong>Source Material</strong>: we
+                            only accept biodegradable, recycled, or rapidly renewable resources. Second, the
+                            <strong>Production Ethics</strong>: our partners must provide proof of fair wages and
+                            low-waste manufacturing cycles.
+                        </p>
+                        <p>Lastly, we look at the <strong>End-of-Life</strong>: can this product return to the earth
+                            without leaving a trace? By adhering to these strict pillars, we ensure that your purchase
+                            isn't just "less bad" for the environment, but actually part of a regenerative cycle that
+                            supports the planet.</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="faq-item">
+                <details>
+                    <summary>
+                        Are your skincare and home products safe for sensitive skin?
+                        <div class="faq-icon">+</div>
+                    </summary>
+                    <div class="faq-content">
+                        <p>Transparency is key here. Our Botanical Serum and Home Care lines are formulated without
+                            sulfates, parabens, synthetic fragrances, or petroleum-based ingredients. We prioritize
+                            "Whole Plant" science, using pure essential oils and cold-pressed botanical extracts.</p>
+                        <p>However, because natural ingredients are potent, we highly recommend reviewing the full
+                            ingredient list provided on each product page. Our Verdana Smart Assistant can also provide
+                            a detailed analysis of any ingredient if you ask! When in doubt, always perform a small
+                            patch test before full application.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- ── SHIPPING & LOGISTICS ── -->
+        <div class="faq-category-label" id="shipping">
+            <span>📦</span> Shipping & Logistics
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-item">
+                <details>
+                    <summary>
+                        How do you manage carbon-neutral shipping?
+                        <div class="faq-icon">+</div>
+                    </summary>
+                    <div class="faq-content">
+                        <p>Most e-commerce operations prioritize speed at the cost of the environment. At Verdana, we
+                            take a different path. We utilize <strong>Consolidated Routing</strong>, which means our
+                            delivery vehicles operate on optimized paths that significantly reduce fuel consumption per
+                            package. Our packaging is 100% plastic-free, using cornstarch pellets and mushroom-based
+                            padding that you can compost at home.</p>
+                        <p>For every kilometer your package travels, we invest in verified reforestation projects in
+                            Tamil Nadu and across India. This ensures that the carbon footprint of your delivery is not
+                            only neutralized but historically offset by the oxygen-producing trees we plant on your
+                            behalf.</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="faq-item">
+                <details>
+                    <summary>
+                        What is your return policy for open products?
+                        <div class="faq-icon">+</div>
+                    </summary>
+                    <div class="faq-content">
+                        <p>To reduce waste and carbon costs associated with return shipping, we encourage mindful
+                            purchasing. If a product arrives damaged or incorrect, we offer a 100% replacement or refund
+                            within 7 days of delivery. For hygiene reasons, we cannot accept returns for opened personal
+                            care or skincare products unless there is a quality defect.</p>
+                        <p>If you find that a product doesn't suit your needs, we encourage you to "re-gift" it to a
+                            friend or family member—extending the product's life is the most sustainable option! If you
+                            truly need a return, please contact our support team to discuss the most eco-friendly way to
+                            process it.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- ── IMPACT & COMMUNITY ── -->
+        <div class="faq-category-label">
+            <span>🌳</span> Impact & Community
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-item">
+                <details>
+                    <summary>
+                        How does the Verdana "One Tree" pledge work?
+                        <div class="faq-icon">+</div>
+                    </summary>
+                    <div class="faq-content">
+                        <p>Our partnership with local reforestation NGOs is the heartbeat of Verdana. For every single
+                            order placed on our platform, we fund the planting of a native sapling. These aren't just
+                            any trees; we select species that support local biodiversity and help restore groundwater
+                            levels.</p>
+                        <p>Once you register an account, your first tree is planted immediately. You can track this in
+                            your <strong>Personal Impact Dashboard</strong>, where we provide updates on the growth of
+                            the forests you are helping to build. This is our way of ensuring that every transaction
+                            leaves the world a little greener than we found it.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- ── CTA BOX ── -->
+        <div class="cta-box">
+            <h2>Still curious about our mission?</h2>
+            <p>Our dedicated sustainability team is always ready to dive deeper into the details. Whether you're a
+                curious shopper or a potential partner, we'd love to hear from you.</p>
+            <a href="{% url 'contact_us' %}" class="btn-contact">Reach Out Locally →</a>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    // Smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+{% endblock %}

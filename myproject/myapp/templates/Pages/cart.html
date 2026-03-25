@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verdana — Your Cart</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --forest: #18301f;
+            --moss: #2b5235;
+            --sage: #4e7e55;
+            --mint: #94c97d;
+            --cream: #f6f1e8;
+            --sand: #ebe2d0;
+            --white: #fdfcf8;
+            --text: #1a2418;
+            --muted: #7a8c76;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--white);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .cart-container {
+            max-width: 1000px;
+            margin: 120px auto 60px;
+            padding: 0 2rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            color: var(--forest);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .cart-table th {
+            background: var(--cream);
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--forest);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .cart-table td {
+            padding: 1.5rem 1.2rem;
+            border-bottom: 1px solid var(--sand);
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .product-info img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: var(--cream);
+        }
+
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--forest);
+        }
+
+        .quantity-badge {
+            background: var(--cream);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-weight: 600;
+            color: var(--forest);
+        }
+
+        .price-col {
+            font-weight: 600;
+            color: var(--sage);
+        }
+
+        .remove-btn {
+            color: #c0392b;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .remove-btn:hover {
+            opacity: 0.7;
+        }
+
+        .cart-summary {
+            margin-top: 3rem;
+            background: var(--forest);
+            color: var(--cream);
+            padding: 2.5rem;
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .total-amount {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .checkout-btn {
+            background: var(--mint);
+            color: var(--forest);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(148, 201, 125, 0.3);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .empty-cart div {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-cart p {
+            font-size: 1.2rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'base.html' %}
+
+    <div class="cart-container">
+        <h1>Your <em>Eco-Basket</em></h1>
+
+        {% if cart_items %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            {% if item.product.product_img %}
+                            <img src="{{ item.product.product_img.url }}" alt="{{ item.product.product_name }}">
+                            {% else %}
+                            <div
+                                style="width:80px; height:80px; background:var(--cream); display:flex; align-items:center; justify-content:center; border-radius:12px;">
+                                🌿</div>
+                            {% endif %}
+                            <div class="product-name">{{ item.product.product_name }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="quantity-badge">{{ item.quantity }}</span>
+                    </td>
+                    <td class="price-col">₹{{ item.product.product_price }}</td>
+                    <td class="price-col">₹{{ item.total_price }}</td>
+                    <td>
+                        <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="cart-summary">
+            <div>
+                <div class="total-label">Grand Total</div>
+                <div class="total-amount">₹{{ total }}</div>
+            </div>
+            <a href="{% url 'checkout' %}" class="checkout-btn">Checkout & Plant Your Tree →</a>
+        </div>
+
+        {% else %}
+        <div class="empty-cart">
+            <div>🛍️</div>
+            <p>Your basket is waiting for some green essentials.</p>
+            <a href="{% url 'product' %}" class="checkout-btn">Continue Conscious Shopping</a>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

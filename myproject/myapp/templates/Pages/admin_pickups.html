@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Styles/pickup.css' %}">
+
+<section class="pickup-section">
+    <div class="pickup-container" style="max-width: 1200px;">
+        <h1 class="pickup-title">Admin Management: Recycling Pickups ♻️</h1>
+        <p style="text-align: center; color: var(--sage-secondary); margin-bottom: 40px;">
+            Review and update pickup statuses for all recycling requests across the platform.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            {% for p in pickups %}
+            <div class="admin-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="font-weight: 700; color: var(--forest-primary);">Pickup #{{ p.id }}</span>
+                    <span class="status-badge status-{{ p.status|lower }}">{{ p.status }}</span>
+                </div>
+                
+                <p style="margin: 5px 0;">👤 **User:** {{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.email }})</p>
+                <p style="margin: 5px 0;">♻️ **Waste Type:** {{ p.waste_type }}</p>
+                <p style="margin: 5px 0;">📅 **Date:** {{ p.pickup_date|date:"D, d M Y" }}</p>
+                <p style="margin: 5px 0;">📍 **Address:** {{ p.address }}</p>
+                <p style="margin: 5px 0; font-size: 0.8rem; color: #888;">⏱️ Requested on: {{ p.created_at|date:"d M Y, H:i" }}</p>
+
+                <form action="{% url 'admin_manage_pickups' %}" method="POST" class="update-status-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="pickup_id" value="{{ p.id }}">
+                    <select name="status" class="form-input" style="padding: 8px 12px; font-size: 0.85rem;">
+                        <option value="Pending" {% if p.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Assigned" {% if p.status == 'Assigned' %}selected{% endif %}>Assigned</option>
+                        <option value="Completed" {% if p.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        <option value="Cancelled" {% if p.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                    <button type="submit" class="submit-pickup" style="padding: 8px 15px; font-size: 0.85rem; width: auto;">Update</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

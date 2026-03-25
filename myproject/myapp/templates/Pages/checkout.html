@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verdana — Checkout</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --forest: #18301f;
+            --moss: #2b5235;
+            --sage: #4e7e55;
+            --mint: #94c97d;
+            --cream: #f6f1e8;
+            --sand: #ebe2d0;
+            --white: #fdfcf8;
+            --text: #1a2418;
+            --muted: #7a8c76;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--white);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            margin: 120px auto 60px;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            color: var(--forest);
+            margin-bottom: 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .checkout-form {
+            background: var(--white);
+            border: 1px solid var(--sand);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--forest);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--cream);
+            border: 1px solid var(--sand);
+            border-radius: 10px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sage);
+            box-shadow: 0 0 0 3px rgba(78, 126, 85, 0.1);
+        }
+
+        .order-summary-card {
+            background: var(--forest);
+            color: var(--cream);
+            padding: 2.5rem;
+            border-radius: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(246, 241, 232, 0.2);
+            padding-bottom: 1rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .summary-item.total {
+            margin-top: 2rem;
+            border-top: 1px solid rgba(246, 241, 232, 0.2);
+            padding-top: 1.5rem;
+            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            background: var(--mint);
+            color: var(--forest);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 100px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+
+        .place-order-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(148, 201, 125, 0.3);
+        }
+
+        .back-to-cart {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: rgba(246, 241, 232, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-to-cart:hover {
+            color: var(--mint);
+        }
+
+        .small-product-list {
+            margin-bottom: 2rem;
+        }
+
+        .small-product-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+    </style>
+
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+    {% include 'base.html' %}
+
+    <div class="checkout-container">
+        <h1>Order <em>Summary</em></h1>
+
+        <div class="checkout-form">
+            <form id="orderForm" action="{% url 'place_order' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-section-title">Shipping Information</div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" name="full_name" value="{{ user.first_name }} {{ user.last_name }}"
+                        required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phone" name="phone" value="{{ user.phone }}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <textarea id="address" name="address" rows="3" placeholder="Enter your full shipping address"
+                        required></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="city" name="city" value="{{ user.city }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Zip Code</label>
+                        <input type="text" id="zip" name="zip_code" required>
+                    </div>
+                </div>
+
+                <!-- Razorpay Hidden Inputs -->
+                <input type="hidden" id="razorpay_payment_id" name="razorpay_payment_id">
+                <input type="hidden" id="razorpay_order_id" name="razorpay_order_id" value="{{ razorpay_order_id }}">
+                <input type="hidden" id="razorpay_signature" name="razorpay_signature">
+            </form>
+        </div>
+
+        <div class="order-summary-card">
+            <div class="summary-title">Your Green Essentials</div>
+
+            <div class="small-product-list">
+                {% for item in cart_items %}
+                <div class="small-product-item">
+                    <span>{{ item.product.product_name }} (x{{ item.quantity }})</span>
+                    <span>₹{{ item.total_price }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="summary-item">
+                <span>Subtotal</span>
+                <span>₹{{ total }}</span>
+            </div>
+            <div class="summary-item">
+                <span>♻️ Carbon Neutral Shipping</span>
+                <span style="color:var(--mint);">FREE</span>
+            </div>
+
+            <div class="summary-item total">
+                <span>Total</span>
+                <span>₹{{ total }}</span>
+            </div>
+
+            <button type="button" id="pay-btn" class="place-order-btn">
+                Complete Order & Plant Tree 🌱
+            </button>
+
+            <div style="text-align: center;">
+                <a href="{% url 'view_cart' %}" class="back-to-cart">← Edit Cart</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ total|floatformat:0 }}00", // amount in paise
+            "currency": "INR",
+            "name": "Verdana Eco Store",
+            "description": "Premium Sustainable Products",
+            "image": "https://img.icons8.com/color/96/000000/leaf.png",
+            "order_id": "{{ razorpay_order_id }}",
+            "handler": function (response) {
+                // This runs after successful payment
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+
+                // Disable button to prevent double click
+                document.getElementById('pay-btn').disabled = true;
+                document.getElementById('pay-btn').innerText = "Verifying Payment...";
+
+                // Submit the form
+                document.getElementById('orderForm').submit();
+            },
+            "prefill": {
+                "name": document.getElementById('name').value,
+                "email": document.getElementById('email').value,
+                "contact": document.getElementById('phone').value
+            },
+            "theme": {
+                "color": "#18301f"
+            }
+        };
+
+        const rzp1 = new Razorpay(options);
+
+        document.getElementById('pay-btn').onclick = function (e) {
+            // Basic validation check
+            const form = document.getElementById('orderForm');
+            if (form.checkValidity()) {
+                rzp1.open();
+            } else {
+                form.reportValidity();
+            }
+            e.preventDefault();
+        }
+    </script>
+
+</body>
+
+</html>

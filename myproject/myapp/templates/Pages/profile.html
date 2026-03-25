@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="padding: 120px 5% 80px; min-height: 100vh; background: #fdfcf8; font-family: 'Jost', sans-serif;">
+    <div style="max-width: 800px; margin: 0 auto;">
+
+        <!-- Breadcrumb -->
+        <div
+            style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #6b7c6a;">
+            <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">Home</a>
+            <span>/</span>
+            <span style="color: #1a3a2a; font-weight: 600;">My Profile</span>
+        </div>
+
+        <div
+            style="background: white; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.04); border: 1px solid rgba(26,58,42,0.05); overflow: hidden;">
+
+            <!-- Profile Header -->
+            <div
+                style="background: linear-gradient(135deg, #1a3a2a, #4e7e55); padding: 50px 40px; color: white; text-align: center; position: relative;">
+                <div
+                    style="position: relative; width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; border: 5px solid rgba(255,255,255,0.2); overflow: hidden; background: #f0f0f0;">
+                    {% if user.profile_img %}
+                    <img id="profilePreview" src="{{ user.profile_img.url }}" alt="Profile"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                    <div id="profilePlaceholder"
+                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: #6b7c6a; background: #e8f0e6;">
+                        {{ user.first_name|first }}
+                    </div>
+                    {% endif %}
+                </div>
+                <h2 style="font-family: 'Playfair Display'; font-size: 2.2rem; margin: 0 0 5px;">{{ user.first_name }}
+                    {{ user.last_name }}</h2>
+                <p style="opacity: 0.8; font-size: 1rem; margin: 0;">{{ user.role }} Membership 🌿</p>
+            </div>
+
+            <!-- Profile Form -->
+            <form method="POST" enctype="multipart/form-data" style="padding: 40px;">
+                {% csrf_token %}
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+                    <!-- First Name -->
+                    <div>
+                        <label
+                            style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">First
+                            Name</label>
+                        <input type="text" name="fname" value="{{ user.first_name }}" required
+                            style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Jost'; outline: none; transition: border-color 0.3s;"
+                            onfocus="this.style.borderColor='#4e7e55'" onblur="this.style.borderColor='#eee'">
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label
+                            style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Last
+                            Name</label>
+                        <input type="text" name="lname" value="{{ user.last_name }}" required
+                            style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Jost'; outline: none; transition: border-color 0.3s;"
+                            onfocus="this.style.borderColor='#4e7e55'" onblur="this.style.borderColor='#eee'">
+                    </div>
+                </div>
+
+                <!-- Email (Read Only) -->
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Email
+                        Address <span style="font-size: 0.7rem; color: #999;">(Non-editable)</span></label>
+                    <input type="email" value="{{ user.email }}" disabled
+                        style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #f5f5f5; background: #fafafa; color: #999; font-family: 'Jost'; cursor: not-allowed;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+                    <!-- Phone -->
+                    <div>
+                        <label
+                            style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Phone
+                            Number</label>
+                        <input type="text" name="phone" value="{{ user.phone }}" required
+                            style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Jost'; outline: none; transition: border-color 0.3s;"
+                            onfocus="this.style.borderColor='#4e7e55'" onblur="this.style.borderColor='#eee'">
+                    </div>
+
+                    <!-- City -->
+                    <div>
+                        <label
+                            style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">City</label>
+                        <input type="text" name="city" value="{{ user.city }}"
+                            style="width: 100%; padding: 12px 20px; border-radius: 12px; border: 1.5px solid #eee; font-family: 'Jost'; outline: none; transition: border-color 0.3s;"
+                            onfocus="this.style.borderColor='#4e7e55'" onblur="this.style.borderColor='#eee'">
+                    </div>
+                </div>
+
+                <!-- Profile Image Upload -->
+                <div style="margin-bottom: 40px;">
+                    <label
+                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #1a3a2a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Update
+                        Profile Picture</label>
+                    <div style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
+                        <button type="button"
+                            style="width: 100%; padding: 15px; border: 2px dashed #eee; border-radius: 12px; background: #fff; color: #6b7c6a; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;"
+                            onmouseover="this.style.borderColor='#4e7e55'" onmouseout="this.style.borderColor='#eee'">
+                            📁 Choose New Image
+                        </button>
+                        <input type="file" name="profile_img" accept="image/*"
+                            style="position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;"
+                            onchange="const preview = document.getElementById('profilePreview'); if(this.files[0]){ preview.src = URL.createObjectURL(this.files[0]); }">
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 15px;">
+                    <button type="submit"
+                        style="flex: 1; padding: 15px; background: #1a3a2a; color: white; border: none; border-radius: 15px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: background 0.3s;"
+                        onmouseover="this.style.background='#4e7e55'" onmouseout="this.style.background='#1a3a2a'">
+                        Save Changes ✨
+                    </button>
+                    <a href="{% url 'index' %}"
+                        style="display: flex; align-items: center; justify-content: center; width: 60px; height: 50px; border-radius: 15px; background: #f0f0f0; color: #1a3a2a; text-decoration: none; font-size: 1.2rem;"
+                        title="Cancel">
+                        ✕
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

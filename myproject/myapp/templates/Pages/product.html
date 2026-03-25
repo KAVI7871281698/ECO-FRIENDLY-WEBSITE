@@ -1,0 +1,432 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdana — Shop</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'Styles/product.css' %}" />
+  <style>
+    :root {
+      --forest: #18301f;
+      --moss: #2b5235;
+      --sage: #4e7e55;
+      --mint: #94c97d;
+      --cream: #f6f1e8;
+      --sand: #ebe2d0;
+      --white: #fdfcf8;
+      --text: #1a2418;
+      --muted: #7a8c76;
+      --gold: #c9a84c;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(24, 48, 31, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .product-img-placeholder {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #f5f7f2 0%, #e8f0e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .product-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin: 1.2rem 1.2rem 0.5rem;
+      line-height: 1.2;
+    }
+
+    .product-card .desc {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--muted);
+      margin: 0 1.2rem 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-card .price {
+      font-family: 'Jost', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--sage);
+      margin: 0 1.2rem 1.5rem;
+    }
+
+    .badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 0.4rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .btn-wrap {
+      display: flex;
+      gap: 0.8rem;
+      padding: 0 1.2rem 1.5rem;
+      margin-top: auto;
+    }
+
+    .btn-wrap button {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 12px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    button.cart {
+      background: var(--forest);
+      color: var(--cream);
+      border: none;
+    }
+
+    button.cart:hover {
+      background: var(--moss);
+      box-shadow: 0 5px 15px rgba(24, 48, 31, 0.2);
+    }
+
+    button.details {
+      background: transparent;
+      color: var(--forest);
+      border: 1.5px solid var(--forest);
+    }
+
+    button.details:hover {
+      background: var(--forest);
+      color: var(--cream);
+    }
+
+    .products-grid.list-view {
+      grid-template-columns: 1fr;
+    }
+
+    .products-grid.list-view .product-card {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .products-grid.list-view .product-card img,
+    .products-grid.list-view .product-img-placeholder {
+      width: 250px;
+      height: 200px;
+      border-radius: 20px 0 0 20px;
+    }
+
+    .products-grid.list-view .badge {
+      border-radius: 10px;
+    }
+
+    .products-grid.list-view .info-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .products-grid.list-view .btn-wrap {
+      margin-left: auto;
+      margin-top: 0;
+      flex-direction: column;
+      min-width: 180px;
+      padding-top: 1.5rem;
+      border-left: 1px solid var(--sand);
+    }
+
+    @media (max-width: 768px) {
+      .products-grid.list-view .product-card {
+        flex-direction: column;
+      }
+
+      .products-grid.list-view .product-card img,
+      .products-grid.list-view .product-img-placeholder {
+        width: 100%;
+        height: 250px;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .products-grid.list-view .btn-wrap {
+        border-left: none;
+        border-top: 1px solid var(--sand);
+        margin-left: 0;
+        flex-direction: row;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <!-- ── NAV BAR (Unified) ── -->
+  {% include 'base.html' %}
+
+  <!-- Shop Header -->
+  <div class="shop-header">
+    <div class="shop-header-inner">
+      <div>
+        <h1>Shop <em>Sustainably</em></h1>
+        <p>Certified eco products for conscious living</p>
+        <div class="header-pills">
+          <span class="pill">🌱 100% Natural</span>
+          <span class="pill">♻️ Zero Waste</span>
+          <span class="pill">🌞 Carbon Neutral</span>
+          <span class="pill">🤝 Fair Trade</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Body -->
+  <div class="shop-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Search -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search products…" />
+      </div>
+
+      <!-- Categories (Dynamic from DB) -->
+      <div class="filter-card">
+        <div class="filter-title">Categories</div>
+        <ul class="cat-list">
+          <li class="cat-item">
+            <a href="{% url 'product' %}" style="text-decoration:none;">
+              <button class="{% if not selected_category or selected_category == 'all' %}active{% endif %}"
+                style="width:100%; text-align:left; cursor:pointer;">
+                All Products
+              </button>
+            </a>
+          </li>
+          {% for cat in categories %}
+          <li class="cat-item">
+            <a href="{% url 'product' %}?category={{ cat.name }}" style="text-decoration:none;">
+              <button class="{% if selected_category == cat.name %}active{% endif %}"
+                style="width:100%; text-align:left; cursor:pointer;">
+                {{ cat.name }}
+              </button>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Price -->
+      <div class="filter-card">
+        <div class="filter-title">Maximum Price</div>
+        <input type="range" class="range-input" min="0" max="10000" value="10000" step="100" id="priceRange" />
+        <div class="range-labels"><span>₹0</span><span id="priceVal">₹10,000</span></div>
+      </div>
+    </aside>
+
+    <!-- Product Area -->
+    <main>
+      <!-- Sort Bar -->
+      <div class="sort-bar">
+        <div class="results-count">Showing <strong>{{ view_product|length }}</strong> products</div>
+        <div class="sort-controls">
+          <select class="sort-select" id="sortSelect">
+            <option value="default">Sort: Featured</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+          <div class="view-btns">
+            <button class="view-btn active" id="gridViewBtn" title="Grid view">⊞</button>
+            <button class="view-btn" id="listViewBtn" title="List view">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="products-grid" id="productsGrid">
+        {% for i in view_product %}
+        <div class="product-card" data-name="{{ i.product_name|lower }}" data-price="{{ i.product_price }}">
+          <div class="badge">{{ i.product_Categorie.name|default:"New" }}</div>
+
+          {% if i.product_img %}
+          <img src="{{ i.product_img.url }}" alt="{{ i.product_name }}" />
+          {% else %}
+          <div class="product-img-placeholder">📦</div>
+          {% endif %}
+
+          <div class="info-container">
+            <h4>{{ i.product_name }}</h4>
+            <p class="desc">{{ i.product_des }}</p>
+            <p class="price">₹{{ i.product_price }}</p>
+          </div>
+
+          <div class="btn-wrap">
+            <a href="{% url 'add_to_cart' i.id %}" style="flex: 1; text-decoration: none;">
+              <button class="cart" style="width: 100%;">🛒 Add to Cart</button>
+            </a>
+            <a href="{% url 'product_details' i.id %}" style="text-decoration: none;">
+              <button class="details" style="width: 100%;">View Details</button>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: #7a8c76;">
+          <div style="font-size: 3rem; margin-bottom: 1rem">🌿</div>
+          <p>No products available for this category.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">✅ <span id="toastMsg">Added to cart!</span></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('searchInput');
+      const priceRange = document.getElementById('priceRange');
+      const priceVal = document.getElementById('priceVal');
+      const sortSelect = document.getElementById('sortSelect');
+      const productsGrid = document.getElementById('productsGrid');
+      // Convert NodeList to Array for easier manipulation (sorting, filtering)
+      let productCards = Array.from(productsGrid.querySelectorAll('.product-card'));
+      const gridViewBtn = document.getElementById('gridViewBtn');
+      const listViewBtn = document.getElementById('listViewBtn');
+      const resultsCountStr = document.querySelector('.results-count strong');
+
+      function filterAndSort() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const maxPrice = parseFloat(priceRange.value);
+        let visibleCount = 0;
+
+        // 1. FILTER
+        productCards.forEach(card => {
+          const name = card.getAttribute('data-name') || "";
+          const price = parseFloat(card.getAttribute('data-price')) || 0;
+          const descEl = card.querySelector('.desc');
+          const desc = descEl ? descEl.textContent.toLowerCase() : "";
+
+          const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm);
+          const matchesPrice = price <= maxPrice;
+
+          if (matchesSearch && matchesPrice) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (resultsCountStr) {
+          resultsCountStr.textContent = visibleCount;
+        }
+
+        // 2. SORT (only visible cards for performance, but applied to all for DOM)
+        const sortValue = sortSelect.value;
+        const visibleCards = productCards.filter(c => c.style.display !== 'none');
+
+        visibleCards.sort((a, b) => {
+          const priceA = parseFloat(a.getAttribute('data-price')) || 0;
+          const priceB = parseFloat(b.getAttribute('data-price')) || 0;
+
+          if (sortValue === 'price-low') return priceA - priceB;
+          if (sortValue === 'price-high') return priceB - priceA;
+          return 0; // default order
+        });
+
+        // 3. RE-APPEND to grid to reflect sort order
+        visibleCards.forEach(card => productsGrid.appendChild(card));
+      }
+
+      // Event Listeners
+      if (searchInput) {
+        searchInput.addEventListener('input', filterAndSort);
+      }
+
+      if (priceRange) {
+        priceRange.addEventListener('input', (e) => {
+          const val = parseInt(e.target.value);
+          priceVal.textContent = '₹' + val.toLocaleString('en-IN');
+          filterAndSort();
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener('change', filterAndSort);
+      }
+
+      // View toggles
+      if (gridViewBtn && listViewBtn) {
+        gridViewBtn.addEventListener('click', () => {
+          productsGrid.classList.remove('list-view');
+          gridViewBtn.classList.add('active');
+          listViewBtn.classList.remove('active');
+        });
+
+        listViewBtn.addEventListener('click', () => {
+          productsGrid.classList.add('list-view');
+          listViewBtn.classList.add('active');
+          gridViewBtn.classList.remove('active');
+        });
+      }
+
+      // Initialize defaults
+      filterAndSort();
+    });
+  </script>
+</body>
+
+</html>

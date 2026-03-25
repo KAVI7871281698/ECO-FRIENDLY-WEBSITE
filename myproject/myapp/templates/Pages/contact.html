@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ── CUSTOM STYLES FOR CONTACT PAGE ── -->
+<style>
+    .contact-hero {
+        padding: 160px 5% 100px;
+        background: linear-gradient(rgba(26, 58, 42, 0.8), rgba(26, 58, 42, 0.9)),
+            url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        text-align: center;
+        color: white;
+    }
+
+    .contact-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .contact-hero p {
+        font-family: 'Jost', sans-serif;
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+        opacity: 0.9;
+        line-height: 1.6;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: -60px;
+        padding: 0 5%;
+        position: relative;
+        z-index: 10;
+    }
+
+    .info-card {
+        background: white;
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(26, 58, 42, 0.05);
+        text-align: center;
+    }
+
+    .info-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(26, 58, 42, 0.1);
+    }
+
+    .info-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--cream-base);
+        color: var(--forest-base);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto 25px;
+        transition: 0.3s;
+    }
+
+    .info-card:hover .info-icon {
+        background: var(--forest-base);
+        color: white;
+    }
+
+    .info-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: var(--forest-base);
+    }
+
+    .info-card p {
+        color: var(--muted-base);
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .main-contact-section {
+        padding: 100px 5%;
+        background: var(--white-base);
+    }
+
+    .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 80px;
+        align-items: start;
+    }
+
+    .form-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        color: var(--forest-base);
+        margin-bottom: 25px;
+    }
+
+    .form-wrapper {
+        background: white;
+        padding: 50px;
+        border-radius: 30px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(26, 58, 42, 0.03);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--forest-base);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 15px 25px;
+        border-radius: 15px;
+        border: 1.5px solid #ececec;
+        font-family: 'Jost', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s;
+        outline: none;
+        background: #fcfcfc;
+    }
+
+    .form-control:focus {
+        border-color: var(--sage-base);
+        background: white;
+        box-shadow: 0 10px 20px rgba(90, 138, 94, 0.05);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 18px;
+        background: var(--forest-base);
+        color: white;
+        border: none;
+        border-radius: 18px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+        background: var(--sage-base);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(26, 58, 42, 0.2);
+    }
+
+    .map-section {
+        height: 500px;
+        width: 100%;
+        background: #eee;
+        border-radius: 40px;
+        overflow: hidden;
+        margin-top: 80px;
+        border: 10px solid white;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 968px) {
+        .contact-container {
+            grid-template-columns: 1fr;
+            gap: 50px;
+        }
+
+        .form-content {
+            text-align: center;
+        }
+
+        .form-wrapper {
+            padding: 30px;
+        }
+    }
+</style>
+
+<!-- ── HERO SECTION ── -->
+<div class="contact-hero">
+    <h1>Let's Connect</h1>
+    <p>Whether you have a question about our eco-friendly products, need help with an order, or want to explore a
+        sustainability partnership, we're here to help.</p>
+</div>
+
+<!-- ── INFO CARDS ── -->
+<div class="info-grid">
+    <div class="info-card">
+        <div class="info-icon">📍</div>
+        <h3>Visit Our Studio</h3>
+        <p>123 Eco Way, Green Harbor<br>Chennai, Tamil Nadu 600001</p>
+    </div>
+    <div class="info-card">
+        <div class="info-icon">📞</div>
+        <h3>Give Us a Call</h3>
+        <p>Support: +91 9361921965<br>Sales: +91 9361921965</p>
+    </div>
+    <div class="info-card">
+        <div class="info-icon">✉️</div>
+        <h3>Drop an Email</h3>
+        <p>hema@gmail.com<br>hema@gmail.com</p>
+    </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<section class="main-contact-section">
+    <div class="contact-container">
+
+        <div class="form-content">
+            <h6
+                style="color: var(--sage-base); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">
+                Contact Us</h6>
+            <h2>Have something in mind? <br><em style="color: var(--sage-base);">Send us a message.</em></h2>
+            <p style="color: var(--muted-base); margin-bottom: 40px; font-size: 1.1rem; line-height: 1.8;">
+                Our dedicated team typically responds within 24 hours. For urgent matters regarding existing orders,
+                please include your order ID in the message.
+            </p>
+
+            <div
+                style="background: rgba(90, 138, 94, 0.05); padding: 30px; border-radius: 20px; border-left: 4px solid var(--sage-base);">
+                <h4 style="color: var(--forest-base); margin-bottom: 10px; font-family: 'Playfair Display';">Quick
+                    Support</h4>
+                <p style="font-size: 0.9rem; color: var(--muted-base); margin-bottom: 0;">Check our <a
+                        href="{% url 'faq' %}" style="color: var(--sage-base); font-weight: 600;">FAQ Page</a> for
+                    instant answers to common questions about shipping, returns, and materials.</p>
+            </div>
+        </div>
+
+        <div class="form-wrapper">
+            <form method="POST">
+                {% csrf_token %}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Arjun Kumar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="arjun@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Inquiry Type</label>
+                    <select name="subject" class="form-control"
+                        style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231a3a2a%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 1.5rem top 50%; background-size: 0.65rem auto;">
+                        <option>General Inquiry</option>
+                        <option>Order Support</option>
+                        <option>Sustainability Partnerships</option>
+                        <option>Media & Press</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Message</label>
+                    <textarea name="message" class="form-control" rows="5" placeholder="Tell us how we can help..."
+                        required style="resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="contactSubmit">
+                    <span>Send Message</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- ── MAP SECTION ── -->
+    <div class="contact-container">
+        <div style="grid-column: 1 / -1;">
+            <div class="map-section">
+                <!-- Embedded Google Map -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.828624135252!2d80.245233!3d13.047525!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526659f71c4807%3A0xc62240974ad0f353!2sTeynampet%2C%20Chennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Simple submission animation -->
+<script>
+    const form = document.querySelector('form');
+    const btn = document.getElementById('contactSubmit');
+
+    if (form) {
+        form.addEventListener('submit', function () {
+            btn.innerHTML = '<span>Sending...</span> <div class="spinner" style="width: 15px; height: 15px; border: 2px solid white; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+        });
+    }
+</script>
+
+<style>
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}

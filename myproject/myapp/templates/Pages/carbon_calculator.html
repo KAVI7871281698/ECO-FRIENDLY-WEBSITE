@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Styles/carbon_calculator.css' %}">
+
+<section class="calculator-section">
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>Carbon Footprint Calculator</h1>
+            <p>Measure your environmental impact and get personalized eco-tips.</p>
+        </div>
+
+        <form action="{% url 'carbon_calculator' %}" method="POST" id="carbonCalcForm" class="calc-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="transport_type">Transport Type</label>
+                <select name="transport_type" id="transport_type" class="form-control" required>
+                    <option value="Bike" {% if transport_type == 'Bike' %}selected{% endif %}>Bike</option>
+                    <option value="Car" {% if transport_type == 'Car' %}selected{% endif %}>Car</option>
+                    <option value="Bus" {% if transport_type == 'Bus' %}selected{% endif %}>Bus</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="distance">Distance in kilometers (Weekly Average)</label>
+                <input type="number" step="0.1" name="distance" id="distance" class="form-control" placeholder="e.g. 50" value="{{ distance | default:0 }}" required>
+                <div class="error-msg">Please enter a valid distance.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="electricity">Electricity usage in units (Monthly Average)</label>
+                <input type="number" step="0.1" name="electricity" id="electricity" class="form-control" placeholder="e.g. 150" value="{{ electricity | default:0 }}" required>
+                <div class="error-msg">Please enter valid electricity units.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="plastic">Plastic bags used per week</label>
+                <input type="number" name="plastic" id="plastic" class="form-control" placeholder="e.g. 5" value="{{ plastic | default:0 }}" required>
+                <div class="error-msg">Please enter a valid plastic bag count.</div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calculate My Footprint</button>
+        </form>
+
+        {% if result %}
+        <div class="result-container" id="resultCard">
+            <div class="result-score">
+                <h2>Total Carbon Footprint</h2>
+                <span class="score">{{ total_carbon }}</span>
+                <span class="unit">kg CO₂</span>
+            </div>
+
+            <div class="eco-suggestions">
+                <h3>🌿 Eco Suggestions for You:</h3>
+                <ul class="suggestions-list">
+                    {% for suggestion in suggestions %}
+                    <li class="suggestion-item">{{ suggestion }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{% url 'product' %}" class="btn-secondary">View Recommended Eco Products</a>
+                <a href="{% url 'carbon_calculator' %}" class="btn-secondary" style="background: var(--forest-primary); color: white;">Recalculate</a>
+            </div>
+        </div>
+        <script>
+            // Scroll to results once rendered
+            window.scrollTo({
+                top: document.getElementById('resultCard').offsetTop - 150,
+                behavior: 'smooth'
+            });
+        </script>
+        {% endif %}
+    </div>
+</section>
+
+<script src="{% static 'js/carbon_calculator.js' %}"></script>
+<script>
+    // Animation for result after calculation
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('resultCard')) {
+            document.getElementById('resultCard').style.opacity = '1';
+        }
+    });
+</script>
+{% endblock %}

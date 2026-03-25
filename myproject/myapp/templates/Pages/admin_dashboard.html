@@ -1,0 +1,675 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .admin-dashboard-section {
+        padding: 120px 5% 80px;
+        min-height: 100vh;
+        background: #fdfcf8;
+    }
+
+    .admin-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .admin-header {
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .admin-header h6 {
+        color: #5a8a5e;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        font-family: 'DM Sans';
+    }
+
+    .admin-header h2 {
+        font-family: 'Playfair Display';
+        font-size: 2.5rem;
+        color: #18301f;
+        margin: 0;
+    }
+
+    .welcome-text {
+        color: #6b7c6a;
+        font-size: 0.9rem;
+        font-family: 'Jost';
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 25px;
+        margin-bottom: 50px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(26, 58, 42, 0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: #6b7c6a;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-family: 'Playfair Display';
+        color: #1a3a2a;
+        margin-bottom: 5px;
+    }
+
+    .stat-sub {
+        font-size: 0.8rem;
+        color: #5a8a5e;
+        font-weight: 600;
+    }
+
+    .stat-link {
+        font-size: 0.8rem;
+        color: #5a8a5e;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+    }
+
+    @media (max-width: 991px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .content-card {
+        background: white;
+        padding: 35px;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(26, 58, 42, 0.05);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .card-title {
+        font-family: 'Playfair Display';
+        font-size: 1.4rem;
+        color: #1a3a2a;
+        margin: 0;
+    }
+
+    .view-all-link {
+        font-size: 0.85rem;
+        color: #5a8a5e;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Jost';
+    }
+
+    .admin-table th {
+        padding: 15px 10px;
+        color: #6b7c6a;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .admin-table td {
+        padding: 18px 10px;
+        border-bottom: 1px solid #f9f9f9;
+        font-size: 0.9rem;
+    }
+
+    .order-id {
+        font-weight: 600;
+        color: #1a3a2a;
+    }
+
+    .customer-name {
+        color: #4e7e55;
+    }
+
+    .order-amount {
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 100px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .status-paid {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-shipped {
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+
+    .status-pending {
+        background: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .customer-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .customer-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .customer-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #a8d5a2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #1a3a2a;
+        font-size: 0.9rem;
+    }
+
+    .customer-info div:first-child {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1a3a2a;
+    }
+
+    .customer-info div:last-child {
+        font-size: 0.75rem;
+        color: #6b7c6a;
+    }
+
+    .admin-btn-primary {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background: #1a3a2a;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .admin-btn-primary:hover {
+        background: #5a8a5e;
+    }
+
+    .divider {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    /* Modal Styles */
+    .admin-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(26, 58, 42, 0.4);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 50px;
+        border-radius: 30px;
+        width: 100%;
+        max-width: 600px;
+        box-shadow: 0 40px 100px rgba(26, 58, 42, 0.3);
+        position: relative;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        font-size: 2rem;
+        color: #6b7c6a;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1a3a2a;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 12px;
+        border: 1.5px solid #eee;
+        font-family: 'Jost';
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #5a8a5e;
+    }
+</style>
+
+<section class="admin-dashboard-section">
+    <div class="admin-container">
+
+        <!-- Header Section -->
+        <div class="admin-header">
+            <div>
+                <h6>Verdana Management</h6>
+                <h2>Admin Dashboard</h2>
+            </div>
+            <div class="welcome-text">
+                Welcome back, <strong>{{ request.session.user_name }}</strong> ✨
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <!-- Total Revenue -->
+            <div class="stat-card">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">₹{{ total_revenue|default:"0.00" }}</div>
+                <div class="stat-sub">↑ Total Store Performance</div>
+            </div>
+
+            <!-- Total Orders -->
+            <div class="stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value">{{ total_orders }}</div>
+                <div class="stat-sub">Processed Transactions</div>
+            </div>
+
+            <!-- Total Users -->
+            <div class="stat-card">
+                <div class="stat-label">Registered Users</div>
+                <div class="stat-value">{{ total_users }}</div>
+                <div class="stat-sub">Community Members</div>
+            </div>
+
+            <!-- Products -->
+            <div class="stat-card">
+                <div class="stat-label">Inventory</div>
+                <div class="stat-value">{{ total_products }} Items</div>
+                <a href="#inventorySection" class="stat-link">Manage Inventory →</a>
+            </div>
+
+            <!-- Recycling Pickups -->
+            <div class="stat-card">
+                <div class="stat-label">Recycling Pickups</div>
+                <div class="stat-value">{{ total_pickups }}</div>
+                <a href="{% url 'admin_manage_pickups' %}" class="stat-link">Manage All Pickups →</a>
+            </div>
+        </div>
+
+
+        <!-- Inventory Management Section -->
+        <div class="content-card" id="inventorySection" style="margin-top: 40px;">
+            <div class="card-header">
+                <h4 class="card-title">Inventory Management</h4>
+                <button onclick="toggleModal('addProductModal')" class="admin-btn-primary"
+                    style="width: auto; padding: 10px 25px;">+ Add New Product</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>
+                                {% if product.product_img %}
+                                <img src="{{ product.product_img.url }}" alt="{{ product.product_name }}"
+                                    style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                {% else %}
+                                <div
+                                    style="width: 50px; height: 50px; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #999;">
+                                    No Img</div>
+                                {% endif %}
+                            </td>
+                            <td style="font-weight: 600; color: #1a3a2a;">{{ product.product_name }}</td>
+                            <td>{{ product.product_Categorie.name }}</td>
+                            <td class="order-amount">₹{{ product.product_price }}</td>
+                            <td
+                                style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b7c6a; font-size: 0.85rem;">
+                                {{ product.product_des }}</td>
+                            <td>
+                                <div style="display: flex; gap: 10px;">
+                                    <button
+                                        onclick="openEditModal('{{ product.id }}', '{{ product.product_name }}', '{{ product.product_Categorie.id }}', '{{ product.product_price }}', '{{ product.product_des }}')"
+                                        class="status-badge status-shipped"
+                                        style="border: none; cursor: pointer;">Edit</button>
+                                    <a href="{% url 'admin_delete_product' product.id %}"
+                                        onclick="return confirm('Are you sure you want to delete this product?')"
+                                        class="status-badge status-pending"
+                                        style="text-decoration: none; border: none; cursor: pointer; background: #ffebee; color: #c62828;">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="padding: 40px; text-align: center; color: #6b7c6a;">No products in
+                                inventory. Start by adding one!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Recycling Pickup Management Section -->
+        <div class="content-card" style="margin-bottom: 40px;">
+            <div class="card-header">
+                <h4 class="card-title">Recent Recycling Pickups</h4>
+                <a href="{% url 'admin_manage_pickups' %}" class="view-all-link">Manage All</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Waste Type</th>
+                            <th>Pickup Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pickup in recent_pickups %}
+                        <tr>
+                            <td class="customer-name">{{ pickup.user.first_name }}</td>
+                            <td>{{ pickup.waste_type }}</td>
+                            <td>{{ pickup.pickup_date|date:"d M Y" }}</td>
+                            <td>
+                                <span class="status-badge 
+                                    {% if pickup.status == 'Completed' %}status-paid
+                                    {% elif pickup.status == 'Assigned' %}status-shipped
+                                    {% else %}status-pending{% endif %}">
+                                    {{ pickup.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <form action="{% url 'admin_manage_pickups' %}" method="POST" style="display: flex; gap: 5px;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="pickup_id" value="{{ pickup.id }}">
+                                    <select name="status" class="form-control" style="padding: 5px 10px; font-size: 0.8rem; height: auto;">
+                                        <option value="Pending" {% if pickup.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                        <option value="Assigned" {% if pickup.status == 'Assigned' %}selected{% endif %}>Assigned</option>
+                                        <option value="Completed" {% if pickup.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                        <option value="Cancelled" {% if pickup.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                                    </select>
+                                    <button type="submit" class="status-badge status-paid" style="border: none; cursor: pointer;">Save</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="padding: 30px; text-align: center; color: #6b7c6a;">No pickup requests yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="content-grid">
+            <!-- Recent Orders Table -->
+            <div class="content-card">
+
+                <div class="card-header">
+                    <h4 class="card-title">Recent Orders</h4>
+                    <a href="/admin/myapp/order/" class="view-all-link">View All</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                            <tr>
+                                <td class="order-id">#{{ order.id }}</td>
+                                <td class="customer-name">{{ order.full_name }}</td>
+                                <td class="order-amount">₹{{ order.total_price }}</td>
+                                <td>
+                                    <span class="status-badge 
+                                        {% if order.status == 'Paid' %}status-paid
+                                        {% elif order.status == 'Shipped' %}status-shipped
+                                        {% else %}status-pending{% endif %}">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" style="padding: 30px; text-align: center; color: #6b7c6a;">No orders
+                                    yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Users -->
+            <div class="content-card">
+                <h4 class="card-title" style="margin-bottom: 25px;">New Customers</h4>
+                <div class="customer-list">
+                    {% for u in recent_users %}
+                    <div class="customer-item">
+                        <div class="customer-avatar">
+                            {{ u.first_name|first }}{{ u.last_name|first }}
+                        </div>
+                        <div class="customer-info">
+                            <div>{{ u.first_name }} {{ u.last_name }}</div>
+                            <div>{{ u.email }}</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="text-align: center; color: #6b7c6a;">No new users.</p>
+                    {% endfor %}
+                </div>
+
+                <hr class="divider">
+
+                <a href="/admin/myapp/register/" class="admin-btn-primary">Manage All Users</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Add Product Modal -->
+<div class="admin-modal" id="addProductModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="toggleModal('addProductModal')">&times;</span>
+        <h3 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 30px;">Add New Product</h3>
+        <form action="{% url 'admin_add_product' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Bottle" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" class="form-control" required>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" step="0.01" name="price" class="form-control" placeholder="299.00" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Inventory Image</label>
+                <input type="file" name="image" class="form-control" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" class="form-control" rows="3" placeholder="Describe the product..."
+                    required></textarea>
+            </div>
+            <button type="submit" class="admin-btn-primary" style="margin-top: 10px;">Create Product 🌿</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Product Modal -->
+<div class="admin-modal" id="editProductModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="toggleModal('editProductModal')">&times;</span>
+        <h3 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 30px;">Update Product</h3>
+        <form id="editForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="name" id="edit_name" class="form-control" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" id="edit_category" class="form-control" required>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" step="0.01" name="price" id="edit_price" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label>Inventory Image (Keep empty to keep current)</label>
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" id="edit_description" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="admin-btn-primary" style="margin-top: 10px;">Save Changes ✨</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        if (modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function openEditModal(id, name, catId, price, desc) {
+        const form = document.getElementById('editForm');
+        form.action = `/manage-product/update/${id}`;
+
+        document.getElementById('edit_name').value = name;
+        document.getElementById('edit_category').value = catId;
+        document.getElementById('edit_price').value = parseFloat(price);
+        document.getElementById('edit_description').value = desc;
+
+        toggleModal('editProductModal');
+    }
+
+    // Close on backdrop click
+    window.onclick = function (event) {
+        if (event.target.className === 'admin-modal') {
+            event.target.style.display = 'none';
+        }
+    }
+</script>
+{% endblock %}

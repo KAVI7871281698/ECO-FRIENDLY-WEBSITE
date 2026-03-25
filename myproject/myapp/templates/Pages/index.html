@@ -1,0 +1,336 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdana — Live Green, Live Well</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'Styles/index.css' %}  " />
+</head>
+
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ── NAV BAR (Unified) ── -->
+  {% include 'base.html' %}
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Certified Carbon Neutral Since 2021</div>
+      <h1>Regenerate the <em>Earth</em> with Every Choice</h1>
+      <p class="hero-sub">Artisanally curated essentials for a circular lifestyle. We merge ancestral wisdom with modern
+        sustainability to restore what we use.</p>
+      <div class="hero-actions">
+        <a href="{% url 'product' %}" class="btn-primary">Shop Sustainably</a>
+        <a href="#impact" class="btn-ghost">
+          Our Impact
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="card-bg"></div>
+        <div class="card-bg"></div>
+        <div class="hero-main-card">
+          <div class="card-icon-row">
+            <div class="leaf-icon">🌱</div>
+          </div>
+          <div class="card-title">Living greener, one product at a time.</div>
+          <div class="card-footer">
+            <div style="display:flex;align-items:center;">
+              <div class="avatar-row">
+                <div class="avatar">A</div>
+                <div class="avatar">B</div>
+                <div class="avatar">C</div>
+              </div>
+              <span class="joined-text">+18k members</span>
+            </div>
+            <div class="progress-ring">
+              <svg width="52" height="52" viewBox="0 0 52 52">
+                <circle class="bg" cx="26" cy="26" r="20" />
+                <circle class="fill" cx="26" cy="26" r="20" />
+              </svg>
+              <div class="ring-pct">73%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ── -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-num">180K</div>
+      <div class="stat-label">Happy Members</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Recyclable Packaging</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">40T</div>
+      <div class="stat-label">CO₂ Offset (tons)</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">Zero</div>
+      <div class="stat-label">Single-use Plastic</div>
+    </div>
+  </div>
+
+  <!-- ── FEATURES ── -->
+  <section class="section" id="features">
+    <div class="reveal">
+      <div class="section-label">Why Verdana</div>
+      <h2>Built for the planet, <em>designed</em> for you</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🌿</div>
+        <div class="feature-title">Ethical Botanical Sourcing</div>
+        <p class="feature-desc">We work exclusively with regenerative farms that prioritize biodiversity. Every
+          ingredient is 100% traceable from seed to shelf.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.1s">
+        <div class="feature-icon">♻️</div>
+        <div class="feature-title">Refill-First Philosophy</div>
+        <p class="feature-desc">Our packaging isn't just recyclable—it's designed to be reused. We've eliminated 96% of
+          plastic waste through our circular refill system.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.2s">
+        <div class="feature-icon">🌞</div>
+        <div class="feature-title">Climate Positive Logistics</div>
+        <p class="feature-desc">Beyond carbon neutrality, our logistics chain actively removes CO₂ through
+          high-efficiency pooling and renewable energy networks.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.15s">
+        <div class="feature-icon">💧</div>
+        <div class="feature-title">Pure-Water Guarantee</div>
+        <p class="feature-desc">Our production methods are 100% chemical-free, ensuring that zero toxic runoff ever
+          enters our planetary water systems.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay:0.25s">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-title">Artisan Empowerment</div>
+        <p class="feature-desc">We bypass middle-men to provide direct-to-artisan fair trade, investing back into the
+          ancestral communities that craft our goods.</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="how-section" id="how">
+    <div class="reveal">
+      <div class="section-label">How It Works</div>
+      <h2>Simple steps to a <em>greener</em> lifestyle</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Curate Your Ritual</div>
+        <p class="step-desc">Select from our vetted collection of high-performance tools designed for a zero-waste life.
+        </p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.2s">
+        <div class="step-num">02</div>
+        <div class="step-title">Refillable Delivery</div>
+        <p class="step-desc">Receive your essentials in plastic-free, returnable vessels delivered via low-impact
+          routes.</p>
+      </div>
+      <div class="step reveal" style="transition-delay:0.3s">
+        <div class="step-num">03</div>
+        <div class="step-title">Restore the Earth</div>
+        <p class="step-desc">Watch your personal Impact Dashboard grow as you offset your footprint with every single
+          purchase.</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+
+  <!-- ── IMPACT ── -->
+  <section class="impact-section" id="impact">
+    <div class="impact-visual">
+      <div class="impact-circle-main">
+        <div class="big">73%</div>
+        <div class="sub">Emissions Reduced</div>
+      </div>
+      <div class="orbit-dot">
+        <div class="od-num">40T</div>
+        <div class="od-lbl">CO₂ Offset</div>
+      </div>
+      <div class="orbit-dot">
+        <div class="od-num">180K</div>
+        <div class="od-lbl">Members</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="section-label">Our Impact</div>
+      <h2>Real change, <em>measured</em> every day</h2>
+      <div class="impact-points">
+        <div class="impact-point">
+          <div class="ip-icon">🌳</div>
+          <div>
+            <div class="ip-title">Reforestation Programs</div>
+            <p class="ip-desc">We partner with 14 global reforestation NGOs to plant trees in critical biodiversity
+              zones, restoring native habitats.</p>
+          </div>
+        </div>
+        <div class="impact-point">
+          <div class="ip-icon">☀️</div>
+          <div>
+            <div class="ip-title">Renewable Energy Investment</div>
+            <p class="ip-desc">1% of every purchase funds solar micro-grids in rural communities across Southeast Asia
+              and Africa.</p>
+          </div>
+        </div>
+        <div class="impact-point">
+          <div class="ip-icon">🐋</div>
+          <div>
+            <div class="ip-title">Ocean Plastic Cleanup</div>
+            <p class="ip-desc">We've recovered over 12,000 kg of ocean-bound plastic through our beach cleanup
+              partnerships.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section class="testimonials-section" id="stories">
+    <div class="reveal" style="text-align:center; max-width:100%">
+      <div class="section-label" style="justify-content:center">Member Stories</div>
+      <h2 style="margin:0 auto">What our <em>community</em> says</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Switching to Verdana was the easiest lifestyle upgrade I've ever made. Beautiful
+          products, and knowing my choices are helping the planet makes it even better."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">P</div>
+          <div>
+            <div class="author-name">Priya Sharma</div>
+            <div class="author-loc">Mumbai, India</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="transition-delay:0.1s">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"The zero-waste cleaning set has transformed my home routine. Concentrated tabs mean
+          I order half as often, and the packaging is fully compostable."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Arjun Menon</div>
+            <div class="author-loc">Bengaluru, India</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="transition-delay:0.2s">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"I track my tree-planting dashboard every month. It's become a point of pride in my
+          family — my kids love watching the forest grow because of our purchases."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">S</div>
+          <div>
+            <div class="author-name">Sunita Rajan</div>
+            <div class="author-loc">Chennai, India</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo">🌿 Verd<span>ana</span></div>
+        <p>Sustainable living products for a healthier planet. Every purchase makes a measurable difference.</p>
+        <div class="footer-badges" style="margin-top:1.2rem">
+          <span class="badge-pill">🌱 Carbon Neutral</span>
+          <span class="badge-pill">♻️ B-Corp</span>
+          <span class="badge-pill">🌊 1% for Planet</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="{% url 'product' %}">All Essentials</a></li>
+          <li><a href="{% url 'product' %}">Ethical Skincare</a></li>
+          <li><a href="{% url 'product' %}">Plant-based Home</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Mission</h4>
+        <ul>
+          <li><a href="#stories">Our Green Journey</a></li>
+          <li><a href="#impact">Sustainability Report</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="{% url 'faq' %}">Knowledge Base</a></li>
+          <li><a href="{% url 'my_orders' %}">Track My Impact</a></li>
+          <li><a href="{% url 'contact_us' %}">Local Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Verdana. All rights reserved.</span>
+      <span style="color:rgba(168,213,162,0.4)">Made with 💚 for the planet</span>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+
+    // Nav scroll
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+
+    // Add to Cart
+    document.querySelectorAll('.btn-add').forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.textContent = 'Added ✓';
+        this.style.background = 'var(--sage)';
+        setTimeout(() => { this.textContent = 'Add to Cart'; this.style.background = ''; }, 1800);
+      });
+    });
+  </script>
+</body>
+
+</html>

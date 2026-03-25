@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'Styles/pickup.css' %}">
+
+<section class="pickup-section">
+    <div class="pickup-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+            <h1 class="pickup-title" style="margin: 0; text-align: left;">My Pickups ♻️</h1>
+            <a href="{% url 'request_pickup' %}" class="submit-pickup" style="text-decoration: none; padding: 10px 20px;">New Request</a>
+        </div>
+
+        {% if pickups %}
+        <div style="overflow-x: auto;">
+            <table class="pickup-table">
+                <thead>
+                    <tr>
+                        <th>Date Requested</th>
+                        <th>Waste Type</th>
+                        <th>Pickup Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in pickups %}
+                    <tr>
+                        <td>{{ p.created_at|date:"d M Y" }}</td>
+                        <td>{{ p.waste_type }}</td>
+                        <td>{{ p.pickup_date|date:"d M Y" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ p.status|lower }}">{{ p.status }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <div style="font-size: 3rem; margin-bottom: 20px;">📦</div>
+            <h2 style="color: var(--forest-primary);">No pickup requests found</h2>
+            <p style="color: var(--sage-secondary);">Your future recycling pickups will appear here.</p>
+            <a href="{% url 'request_pickup' %}" class="submit-pickup" style="display: inline-block; text-decoration: none; margin-top: 20px;">Make Your First Request</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
