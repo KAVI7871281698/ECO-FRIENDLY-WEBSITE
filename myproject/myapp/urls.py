@@ -32,6 +32,8 @@ urlpatterns = [
     path('faq', views.faq, name='faq'),
     
     # Chatbot
+    path('chat-query', views.chatbot_query, name='chatbot_query'),
+
     # Admin Product Management
     path('manage-product/add', views.admin_add_product, name='admin_add_product'),
     path('manage-product/update/<int:id>', views.admin_update_product, name='admin_update_product'),
