@@ -658,10 +658,9 @@
         <div class="chat-message message-ai">
             Hello! I'm your Verdana assistant. How can I help you live more sustainably today? 🌿
         </div>
-        <div class="chat-options-container" id="chatOptions">
-            <button class="chat-option-btn" onclick="sendQuickReply('Delivery Details')">🚚 Delivery Details</button>
-            <button class="chat-option-btn" onclick="sendQuickReply('My Order Details')">📦 My Order Details</button>
-            <button class="chat-option-btn" onclick="sendQuickReply('Product Details')">🌿 Explore Eco Products</button>
+        <div class="chat-options-container" id="chatOptions" style="margin-top: 10px;">
+            <button class="chat-option-btn" onclick="sendQuickReply('Hi')">👋 Say Hi!</button>
+            <button class="chat-option-btn" onclick="sendQuickReply('Explore Products')">🌿 Browse Collection</button>
         </div>
     </div>
     <div class="chatbot-footer">
@@ -697,13 +696,55 @@
     const chatInput = document.getElementById('chatInput');
     const sendBtn = document.getElementById('sendBtn');
     const chatBody = document.getElementById('chatBody');
+    const chatOptions = document.getElementById('chatOptions');
+
+    // Flag to track if the initial greeting was already sent
+    let greetingSent = false;
+
+    if (openChat) {
+        openChat.addEventListener('click', () => {
+            chatDrawer.classList.add('open');
+            if (!greetingSent) {
+                // Auto-triggering first greeting can be done here or keep static
+                // For this request, we'll keep the static one or trigger 'Hi'
+                // updateOptions(['Hi', 'Explore Products']);
+                greetingSent = true;
+            }
+        });
+    }
+
+    function updateOptions(options) {
+        chatOptions.innerHTML = '';
+        if (options && options.length > 0) {
+            const container = document.createElement('div');
+            container.className = 'chat-options-container';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => sendQuickReply(opt);
+                container.appendChild(btn);
+            });
+            chatBody.appendChild(container);
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
 
     function sendQuickReply(text) {
-        const input = document.getElementById('chatInput');
-        if (input) {
-            input.value = text;
-            sendMessage();
+        // Remove only the LAST options container to keep chat clean
+        const containers = chatBody.querySelectorAll('.chat-options-container');
+        if (containers.length > 0) {
+            containers[containers.length - 1].style.opacity = '0.5';
+            containers[containers.length - 1].style.pointerEvents = 'none';
         }
+
+        chatInput.value = text;
+        sendMessage();
+    }
+
+    function formatResponse(text) {
+        // Simple formatter for bold and newlines
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     }
 
     function sendMessage() {
@@ -726,7 +767,6 @@
         chatBody.appendChild(loadingMsg);
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // REAL Fetch call to OpenAI via Backend
         fetch('/chat-query', {
             method: 'POST',
             headers: {
@@ -739,8 +779,14 @@
                 chatBody.removeChild(loadingMsg);
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'chat-message message-ai';
-                aiMsg.innerText = data.response;
+                aiMsg.innerHTML = formatResponse(data.response);
                 chatBody.appendChild(aiMsg);
+
+                // Show new options if any
+                if (data.options) {
+                    updateOptions(data.options);
+                }
+
                 chatBody.scrollTop = chatBody.scrollHeight;
             })
             .catch(error => {
@@ -748,6 +794,7 @@
                 const errorMsg = document.createElement('div');
                 errorMsg.className = 'chat-message message-ai';
                 errorMsg.innerText = "I'm having a bit of trouble connecting to my brain right now. Please try again! 🌿";
+                updateOptions(['Hi', 'Try Again']);
                 chatBody.appendChild(errorMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
             });
