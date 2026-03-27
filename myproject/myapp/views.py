@@ -258,108 +258,90 @@ def chatbot_query(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            u_msg = data.get('message', '').lower()
+            u_msg = data.get('message', '').lower().strip()
             
-            # Fetch products from your real database
             products = ProductModel.objects.all()
-            
-            # 1. Smart Knowledge Base (Local - No API)
             eco_analysis = {
-                "oil": "Oils at Verdana are cold-pressed and organic. They are essential for deep hydration without clogging pores. Unlike chemical oils, they are 100% biodegradable and derived from sustainable farms. 🥥🌿",
-                "serum": "Our Botanical Serums are packed with active plant extracts. They are better for the earth because they don't contain microplastics or synthetic silicones that harm our oceans. 🌊🍃",
-                "brush": "Bamboo brushes are the #1 way to reduce plastic waste. Bamboo grows incredibly fast and is naturally antibacterial. When you're done, it goes back into the soil, not the landfill! 🎍✨",
-                "soap": "Handmade soaps avoid the sulfates and parabens found in factory soaps. They use natural fats that keep your skin soft and are safe for the water system. 🧼💧",
-                "eco": "Choosing eco-friendly products reduces your carbon footprint. At Verdana, we ensure every item is plastic-free and ethically sourced to protect the planet for the next generation! 🌎💚",
+                "oil": "Oils at Verdana are cold-pressed and organic. They are essential for deep hydration without clogging pores. 🥥🌿",
+                "serum": "Our Botanical Serums are packed with active plant extracts. Safe for you and the earth! 🌊🍃",
+                "brush": "Bamboo brushes are the #1 way to reduce plastic waste. They are naturally antibacterial! 🎍✨",
+                "soap": "Handmade soaps avoid the sulfates and parabens found in factory soaps. 🧼💧",
+                "eco": "Choosing eco-friendly products reduces your carbon footprint significantly! 🌎💚",
             }
 
-            resp = ""
+            resp_data = {"response": "", "options": []}
 
-            # INTENT 1: Order Details
-            if any(x in u_msg for x in ['my order', 'order details', 'track order']):
+            # --- GREETINGS ---
+            if u_msg in ['hi', 'hello', 'hey', 'start', 'get started']:
+                resp_data["response"] = "Hi there! 🌿 I'm your Verdana Smart Assistant. How can I help you live more sustainably today?"
+                resp_data["options"] = ["📦 Order Tracking", "🚚 Delivery Info", "🌿 Explore Products", "📉 Carbon Info"]
+                return JsonResponse(resp_data)
+
+            # --- PRODUCT LIST ---
+            if any(x in u_msg for x in ['explore products', 'product list', 'browse', 'show products']):
+                items = "\n".join([f"• **{p.product_name}** - ₹{p.product_price}" for p in products[:5]])
+                resp_data["response"] = f"🌿 **Eco-Product Collection:**\n\n{items}\n\nSelect a category to learn more! ✨"
+                resp_data["options"] = ["🥥 Oils", "🧼 Soaps", "🎍 Bamboo", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
+
+            # --- ORDER TRACKING ---
+            if any(x in u_msg for x in ['order tracking', 'my order', 'track']):
                 if 'user_id' not in request.session:
-                    return JsonResponse({'response': "Please sign in to view your order details. 👤"})
+                    resp_data["response"] = "Please sign in to view your orders. 👤"
+                    resp_data["options"] = ["🔑 Sign In", "🚚 Shipping Policy"]
+                    return JsonResponse(resp_data)
                 
                 user = Register.objects.get(id=request.session['user_id'])
                 orders = Order.objects.filter(user=user).order_by('-created_at')[:3]
                 
                 if not orders:
-                    return JsonResponse({'response': "You haven't placed any orders yet. Check out our eco-friendly shop! 🛒"})
-                
-                resp += "📦 **Your Recent Orders:**\n\n"
-                for o in orders:
-                    items = o.orderitem_set.all()
-                    item_names = ", ".join([f"{item.product.product_name} (x{item.quantity})" for item in items])
-                    resp += f"🏷️ **OrderID:** #{o.id}\n"
-                    resp += f"📌 **Status:** {o.status}\n"
-                    resp += f"🛍️ **Items:** {item_names}\n"
-                    resp += f"💰 **Total Price:** ₹{o.total_price}\n"
-                    resp += f"🚚 **Expected Delivery:** 3-5 business days\n\n"
-                resp += "Track more details in the 'My Orders' section! 🌿"
-                return JsonResponse({'response': resp})
+                    resp_data["response"] = "You haven't placed any orders yet. Ready to start your green journey? 🛒"
+                    resp_data["options"] = ["🌿 Explore Products", "🔙 Back to Menu"]
+                else:
+                    msg = "📦 **Your Recent Orders:**\n\n"
+                    for o in orders:
+                        msg += f"🏷️ **OrderID:** #{o.id} | **Status:** {o.status} | **Total:** ₹{o.total_price}\n"
+                    msg += "\nTrack full details in your Profile! 🌿"
+                    resp_data["response"] = msg
+                    resp_data["options"] = ["🚚 Delivery Times", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
 
-            # INTENT 2: Delivery Details
-            if any(x in u_msg for x in ['delivery details', 'shipping', 'delivery']):
-                resp += "🚚 **Delivery & Shipping Info**\n\n"
-                resp += "• We use **100% Carbon Neutral** logistics.\n"
-                resp += "• Orders are processed within 24 hours.\n"
-                resp += "• **Standard Delivery:** 3-5 business days.\n"
-                resp += "• **Express Delivery:** 1-2 business days.\n\n"
-                resp += "Your eco-basket impact tracking will begin once dispatched! 🌍"
-                return JsonResponse({'response': resp})
+            # --- DELIVERY INFO ---
+            if any(x in u_msg for x in ['delivery info', 'shipping', 'delivery details']):
+                resp_data["response"] = "🚚 **Shipping & Sustainability**\n\n• **Standard:** 3-5 days (Carbon Neutral)\n• **Express:** 1-2 days\n• **Packaging:** 100% Plastic-free\n\nWe ensure every mile of delivery is tracked for its eco-impact! 🌍"
+                resp_data["options"] = ["📦 Order Tracking", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
 
-            # INTENT 3: Display All Products
-            if u_msg in ["explore eco products", "product details", "products info", "show products", "list"]:
-                resp += "🌿 **Explore Eco Products**\n\n"
-                for p in products:
-                    resp += f"• **{p.product_name}** - ₹{p.product_price}\n"
-                resp += "\nType the name or description of any product (like 'soap', 'oil', or 'bamboo') to see its full details! ✨"
-                return JsonResponse({'response': resp})
+            # --- CARBON INFO ---
+            if u_msg in ['carbon info', 'carbon calculator', 'footprint']:
+                resp_data["response"] = "🌍 **Reduce your Footprint**\n\nWe offer a built-in **Carbon Calculator** to help you track your impact. Reducing travel and switching to bamboo products can save up to 5kg of CO2 per month! 🌿"
+                resp_data["options"] = ["📉 Start Calculator", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
 
-            # INTENT 4: Advanced Product Search / Details (Fuzzy match)
-            # If the user provides part of the description or asks about product specifics
-            if len(u_msg) > 2 and u_msg not in ['hi', 'hello', 'hey', 'start']:
-                # Semantic / Fuzzy search checking name or description
-                q_objects = Q()
-                ignored_words = ['show', 'give', 'me', 'the', 'details', 'of', 'product', 'price', 'about', 'analyze', 'delivery', 'duality', 'quality', 'i', 'need', 'want', 'a', 'an']
-                search_words = [word for word in u_msg.split() if word not in ignored_words]
-                
-                for word in search_words:
-                    if len(word) > 2:
-                        q_objects |= Q(product_name__icontains=word) | Q(product_des__icontains=word)
-                
-                if q_objects:
-                    matched_products = ProductModel.objects.filter(q_objects).distinct()
-                    
-                    if matched_products.exists():
-                        p = matched_products.first() # Grab the best match
-                        p_name = p.product_name.lower()
-                        
-                        resp += f"🔎 **Product Details: {p.product_name}**\n\n"
-                        resp += f"📝 **Description:** {p.product_des}\n"
-                        resp += f"💰 **Price:** ₹{p.product_price}\n"
-                        resp += f"🌟 **Quality:** 100% Organic & Eco-certified\n"
-                        resp += f"🚚 **Delivery:** Expected 3-5 business days\n\n"
-                        
-                        if "oil" in p_name: resp += f"💡 **Eco-Impact:** {eco_analysis['oil']}"
-                        elif "serum" in p_name: resp += f"💡 **Eco-Impact:** {eco_analysis['serum']}"
-                        elif "brush" in p_name: resp += f"💡 **Eco-Impact:** {eco_analysis['brush']}"
-                        elif "soap" in p_name: resp += f"💡 **Eco-Impact:** {eco_analysis['soap']}"
-                        else: resp += f"💡 **Eco-Impact:** {eco_analysis['eco']}"
-                        
-                        return JsonResponse({'response': resp})
+            # --- PRODUCT CATEGORIES (Nested) ---
+            if "oil" in u_msg:
+                resp_data["response"] = f"🥥 **Verdana Cold-Pressed Oils:** {eco_analysis['oil']}\n\nWould you like to see detailed product specs?"
+                resp_data["options"] = ["🛒 View Oils in Shop", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
+            
+            if "soap" in u_msg:
+                resp_data["response"] = f"🧼 **Natural Handmade Soaps:** {eco_analysis['soap']}\n\nBetter for your skin and the groundwater!"
+                resp_data["options"] = ["🛒 View Soaps in Shop", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
 
-            # Default Greetings
-            resp += "🌿 **Verdana Smart Assistant** 🌿\n\n"
-            resp += "Hello! I can help you with:\n"
-            resp += "📦 **Order Details** (track purchases)\n"
-            resp += "🚚 **Delivery Details** (shipping times)\n"
-            resp += "🔎 **Product Details** (just type a description or product name!)\n\n"
-            resp += "Simply click an option above or type your request! ✨"
-            return JsonResponse({'response': resp})
+            if "bamboo" in u_msg:
+                resp_data["response"] = f"🎍 **Bamboo Essentials:** {eco_analysis['brush']}\n\nA simple switch to bamboo saves thousands of plastic items from landfills! ✨"
+                resp_data["options"] = ["🛒 View Bamboo in Shop", "🔙 Back to Menu"]
+                return JsonResponse(resp_data)
+
+            # --- DEFAULT RESPONSE ---
+            resp_data["response"] = "I'm here to help! 🌿 Try selecting an option below or type your query about our eco-products."
+            resp_data["options"] = ["📦 Order Tracking", "🚚 Delivery Info", "🌿 Explore Products", "📉 Carbon Info"]
+            return JsonResponse(resp_data)
 
         except Exception as e:
-            print(f"Bot Error: {e}")
-            return JsonResponse({'response': "I had a tiny hiccup! Try saying 'Hello' to restart me. 🌿"}, status=200)
+            print(f"Chatbot Error: {e}")
+            return JsonResponse({'response': "I had a tiny hiccup! Try saying 'Hi' to restart our chat. 🌿", "options": ["Hi"]}, status=200)
             
     return JsonResponse({'error': 'Invalid request'}, status=400)
 

@@ -234,8 +234,12 @@
                         </div>
                         {% endif %}
                         <div class="item-info">
-                            <div style="font-weight:600;">{{ item.product.product_name }}</div>
+                            <div style="font-weight:600; color: var(--forest);">{{ item.product.product_name }}</div>
+                            <div style="color:var(--muted); font-size: 0.8rem; margin: 4px 0; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                {{ item.product.product_des }}
+                            </div>
                             <div style="color:var(--muted);">Qty: {{ item.quantity }} × ₹{{ item.price }}</div>
+                            <a href="{% url 'product_details' item.product.id %}" style="font-size: 0.75rem; color: var(--sage); text-decoration: none; font-weight: 600;">View Product Details →</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -249,10 +253,89 @@
                 <div class="order-total">
                     <div style="font-size: 0.85rem; color: var(--muted);">Grand Total</div>
                     <div class="total-price">₹{{ order.total_price }}</div>
+                    <button class="status-badge status-shipped" style="margin-top: 20px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center;" onclick="toggleOrderModal('orderModal-{{ order.id }}')">
+                        <span>🔍</span> Full Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Detail Modal -->
+        <div class="order-modal-overlay" id="orderModal-{{ order.id }}" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(24, 48, 31, 0.4); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: white; border-radius: 30px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 40px 100px rgba(0,0,0,0.15); border: 1px solid var(--sand); position: relative;">
+                <div style="position: sticky; top: 0; background: white; padding: 25px 35px; border-bottom: 1px solid var(--sand); display: flex; justify-content: space-between; align-items: center; z-index: 10;">
+                    <div>
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--forest); margin: 0;">Order Details</h2>
+                        <div style="color: var(--muted); font-size: 0.9rem;">#{{ order.id }} • {{ order.created_at|date:"F d, Y" }}</div>
+                    </div>
+                    <button style="background: var(--cream); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; color: var(--forest);" onclick="toggleOrderModal('orderModal-{{ order.id }}')">&times;</button>
+                </div>
+                
+                <div style="padding: 35px;">
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--forest); margin-bottom: 20px;">Purchased Items</h3>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        {% for item in order.items.all %}
+                        <div style="display: flex; gap: 20px; padding: 15px; background: var(--white); border: 1px solid var(--sand); border-radius: 20px;">
+                            <img src="{{ item.product.product_img.url }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; border: 1px solid var(--sand);">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 5px; color: var(--forest);">{{ item.product.product_name }}</h4>
+                                <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; margin: 0 0 10px;">{{ item.product.product_des }}</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-weight: 600; color: var(--sage);">₹{{ item.price }} × {{ item.quantity }}</div>
+                                    <a href="{% url 'product_details' item.product.id %}" style="font-size: 0.8rem; color: var(--forest); font-weight: 600;">View Info →</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div style="margin-top: 35px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; border-top: 1px solid var(--sand); padding-top: 30px;">
+                        <div>
+                            <h4 style="font-family: 'Cormorant Garamond', serif; margin: 0 0 10px; font-size: 1.2rem;">📍 Shipping Detail</h4>
+                            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin: 0;">
+                                {{ order.full_name }}<br>
+                                {{ order.address }}<br>
+                                {{ order.city }}, {{ order.zip_code }}<br>
+                                📞 {{ order.phone }}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="font-family: 'Cormorant Garamond', serif; margin: 0 0 10px; font-size: 1.2rem;">📈 Summary</h4>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                                <span>Status:</span>
+                                <span style="font-weight: 700; color: var(--sage);">{{ order.status }}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; color: var(--forest); margin-top: 10px; padding-top: 10px; border-top: 2px dashed var(--sand);">
+                                <span>Total Paid:</span>
+                                <span>₹{{ order.total_price }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
+
+        <script>
+            function toggleOrderModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                } else {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            // Close on outside click
+            window.onclick = function(event) {
+                if (event.target.classList.contains('order-modal-overlay')) {
+                    event.target.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        </script>
         {% else %}
         <div class="empty-orders">
             <span>📦</span>
