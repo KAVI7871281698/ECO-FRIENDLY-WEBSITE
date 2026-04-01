@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Register, Category, product, Order, OrderItem, CarbonFootprint, PickupRequest
+from .models import Register, Category, product, Order, OrderItem, PickupRequest
 
 @admin.register(Register)
 class RegisterAdmin(admin.ModelAdmin):
@@ -34,11 +34,6 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'price')
 
-@admin.register(CarbonFootprint)
-class CarbonFootprintAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_carbon', 'created_at')
-    list_filter = ('created_at',)
-    search_fields = ('user__email', 'user__first_name')
 
 @admin.register(PickupRequest)
 class PickupRequestAdmin(admin.ModelAdmin):

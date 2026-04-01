@@ -386,6 +386,7 @@
                             <th>Product Name</th>
                             <th>Category</th>
                             <th>Price</th>
+                            <th>Carbon (kg)</th>
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
@@ -406,13 +407,14 @@
                             <td style="font-weight: 600; color: #1a3a2a;">{{ product.product_name }}</td>
                             <td>{{ product.product_Categorie.name }}</td>
                             <td class="order-amount">₹{{ product.product_price }}</td>
+                            <td style="color: #5a8a5e; font-weight: 600;">{{ product.carbon_footprint }} kg</td>
                             <td
                                 style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b7c6a; font-size: 0.85rem;">
                                 {{ product.product_des }}</td>
                             <td>
                                 <div style="display: flex; gap: 10px;">
                                     <button
-                                        onclick="openEditModal('{{ product.id }}', '{{ product.product_name }}', '{{ product.product_Categorie.id }}', '{{ product.product_price }}', '{{ product.product_des }}')"
+                                        onclick="openEditModal('{{ product.id }}', '{{ product.product_name }}', '{{ product.product_Categorie.id }}', '{{ product.product_price }}', '{{ product.product_des }}', '{{ product.carbon_footprint }}')"
                                         class="status-badge status-shipped"
                                         style="border: none; cursor: pointer;">Edit</button>
                                     <a href="{% url 'admin_delete_product' product.id %}"
@@ -650,7 +652,7 @@
                 <label>Product Name</label>
                 <input type="text" name="name" class="form-control" placeholder="Bottle" required>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category" class="form-control" required>
@@ -662,6 +664,10 @@
                 <div class="form-group">
                     <label>Price (₹)</label>
                     <input type="number" step="0.01" name="price" class="form-control" placeholder="299.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Carbon (kg CO₂)</label>
+                    <input type="number" step="0.01" name="carbon_footprint" class="form-control" placeholder="0.5" required>
                 </div>
             </div>
             <div class="form-group">
@@ -689,7 +695,7 @@
                 <label>Product Name</label>
                 <input type="text" name="name" id="edit_name" class="form-control" required>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                 <div class="form-group">
                     <label>Category</label>
                     <select name="category" id="edit_category" class="form-control" required>
@@ -701,6 +707,10 @@
                 <div class="form-group">
                     <label>Price (₹)</label>
                     <input type="number" step="0.01" name="price" id="edit_price" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Carbon (kg CO₂)</label>
+                    <input type="number" step="0.01" name="carbon_footprint" id="edit_carbon_footprint" class="form-control" required>
                 </div>
             </div>
             <div class="form-group" style="margin-bottom: 10px;">
@@ -726,7 +736,7 @@
         }
     }
 
-    function openEditModal(id, name, catId, price, desc) {
+    function openEditModal(id, name, catId, price, desc, carbonFootprint) {
         const form = document.getElementById('editForm');
         form.action = `/manage-product/update/${id}`;
 
@@ -734,6 +744,7 @@
         document.getElementById('edit_category').value = catId;
         document.getElementById('edit_price').value = parseFloat(price);
         document.getElementById('edit_description').value = desc;
+        document.getElementById('edit_carbon_footprint').value = parseFloat(carbonFootprint) || 0;
 
         toggleModal('editProductModal');
     }

@@ -233,7 +233,10 @@
             </div>
 
             <h1 class="p-title">{{ product.product_name }}</h1>
-            <div class="p-price">₹{{ product.product_price }}</div>
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+                <div class="p-price" style="margin-bottom: 0;">₹{{ product.product_price }}</div>
+                <div style="font-size: 1.1rem; font-weight: 600; color: #5a8a5e; background: #e8f5e9; padding: 6px 12px; border-radius: 12px;">🌱 Carbon Footprint: {{ product.carbon_footprint }} kg CO₂</div>
+            </div>
 
             <p class="p-desc">
                 {{ product.product_des }}

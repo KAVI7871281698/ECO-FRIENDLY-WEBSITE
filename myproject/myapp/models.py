@@ -42,6 +42,7 @@ class product(models.Model):
     product_name = models.CharField(max_length=100)
     product_des = models.CharField(max_length=200)
     product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    carbon_footprint = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return self.product_name
@@ -90,17 +91,6 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.product_name}"
 
-class CarbonFootprint(models.Model):
-    user = models.ForeignKey(Register, on_delete=models.CASCADE)
-    transport_type = models.CharField(max_length=20)
-    distance = models.FloatField()
-    electricity = models.FloatField()
-    plastic = models.FloatField()
-    total_carbon = models.FloatField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.first_name}'s calculation - {self.total_carbon} kg"
 
 class PickupRequest(models.Model):
     WASTE_TYPES = (

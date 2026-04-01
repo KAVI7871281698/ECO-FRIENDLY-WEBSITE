@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.conf import settings
-from .models import Register, Category, product as ProductModel, Cart, Order, OrderItem, CarbonFootprint, PickupRequest
+from .models import Register, Category, product as ProductModel, Cart, Order, OrderItem, PickupRequest
 
 
 from django.http import JsonResponse
@@ -413,6 +413,8 @@ def admin_add_product(request):
         price = request.POST.get('price')
         description = request.POST.get('description')
         image = request.FILES.get('image')
+        carbon_footprint = request.POST.get('carbon_footprint', 0)
+
         
         category = get_object_or_404(Category, id=category_id)
         
@@ -421,7 +423,8 @@ def admin_add_product(request):
             product_Categorie=category,
             product_price=price,
             product_des=description,
-            product_img=image
+            product_img=image,
+            carbon_footprint=carbon_footprint
         )
         messages.success(request, f'Product "{name}" added successfully.')
         return redirect('admin_dashboard')
@@ -440,6 +443,7 @@ def admin_update_product(request, id):
         category_id = request.POST.get('category')
         p.product_price = request.POST.get('price')
         p.product_des = request.POST.get('description')
+        p.carbon_footprint = request.POST.get('carbon_footprint', 0)
         
         if request.FILES.get('image'):
             p.product_img = request.FILES.get('image')
@@ -506,62 +510,7 @@ def product_details(request, id):
     product_obj = ProductModel.objects.get(id=id)
     return render(request, 'Pages/product_details.html', {'product': product_obj})
 
-def carbon_calculator(request):
-    if 'user_id' not in request.session:
-        messages.error(request, 'Please login to use the Carbon Calculator.')
-        return redirect('signin')
-    
-    user = Register.objects.get(id=request.session['user_id'])
-    
-    if request.method == 'POST':
-        transport_type = request.POST.get('transport_type')
-        distance = float(request.POST.get('distance', 0))
-        electricity = float(request.POST.get('electricity', 0))
-        plastic = float(request.POST.get('plastic', 0))
-        
-        # Calculation
-        transport_carbon = distance * 0.2
-        electricity_carbon = electricity * 0.5
-        plastic_carbon = plastic * 0.1
-        
-        total_carbon = transport_carbon + electricity_carbon + plastic_carbon
-        
-        # Store in DB
-        CarbonFootprint.objects.create(
-            user=user,
-            transport_type=transport_type,
-            distance=distance,
-            electricity=electricity,
-            plastic=plastic,
-            total_carbon=total_carbon
-        )
-        
-        # Suggestions
-        suggestions = []
-        if total_carbon > 10:
-            suggestions = [
-                "Use public transport to reduce your travel emissions.",
-                "Reduce plastic usage and switch to compostable bags.",
-                "Buy eco-friendly products from our store to support sustainability."
-            ]
-        else:
-            suggestions = [
-                "Great job! Your footprint is relatively low. Continue your eco-friendly habits.",
-                "Share your results to inspire others to reduce their carbon footprint."
-            ]
-            
-        context = {
-            'total_carbon': round(total_carbon, 2),
-            'suggestions': suggestions,
-            'distance': distance,
-            'electricity': electricity,
-            'plastic': plastic,
-            'transport_type': transport_type,
-            'result': True
-        }
-        return render(request, 'Pages/carbon_calculator.html', context)
-        
-    return render(request, 'Pages/carbon_calculator.html')
+
 
 def request_pickup(request):
     if 'user_id' not in request.session:

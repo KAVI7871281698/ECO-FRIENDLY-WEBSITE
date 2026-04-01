@@ -39,8 +39,7 @@ urlpatterns = [
     path('manage-product/update/<int:id>', views.admin_update_product, name='admin_update_product'),
     path('manage-product/delete/<int:id>', views.admin_delete_product, name='admin_delete_product'),
     
-    # Eco Features
-    path('carbon-calculator', views.carbon_calculator, name='carbon_calculator'),
+
     
     # Waste Pickup Features
     path('request-pickup/', views.request_pickup, name='request_pickup'),

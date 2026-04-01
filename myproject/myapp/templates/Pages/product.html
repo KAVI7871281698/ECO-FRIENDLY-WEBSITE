@@ -309,7 +309,10 @@
           <div class="info-container">
             <h4>{{ i.product_name }}</h4>
             <p class="desc">{{ i.product_des }}</p>
-            <p class="price">₹{{ i.product_price }}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 0 1.2rem 1.5rem;">
+              <span class="price" style="margin: 0;">₹{{ i.product_price }}</span>
+              <span style="font-size: 0.85rem; font-weight: 600; color: #5a8a5e; background: #e8f5e9; padding: 4px 8px; border-radius: 8px;">🌱 {{ i.carbon_footprint }} kg CO₂</span>
+            </div>
           </div>
 
           <div class="btn-wrap">
