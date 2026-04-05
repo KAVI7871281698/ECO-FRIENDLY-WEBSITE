@@ -95,10 +95,32 @@ class OrderItem(models.Model):
 class PickupRequest(models.Model):
     WASTE_TYPES = (
         ('Plastic', 'Plastic'),
-        ('Paper', 'Paper'),
-        ('Metal', 'Metal'),
-        ('Glass', 'Glass'),
         ('Electronic', 'Electronic/E-Waste'),
+        ('Thermoplastics', 'Plastic - Thermoplastics'),
+        ('Thermosetting Plastics', 'Plastic - Thermosetting Plastics'),
+        ('Biodegradable Plastics', 'Plastic - Biodegradable Plastics'),
+        ('Non-biodegradable Plastics', 'Plastic - Non-biodegradable Plastics'),
+        ('IT Equipment', 'E-Waste - IT Equipment'),
+        ('Telecommunication Devices', 'E-Waste - Telecommunication Devices'),
+        ('Consumer Electronics', 'E-Waste - Consumer Electronics'),
+        ('Lighting Equipment', 'E-Waste - Lighting Equipment'),
+        ('Electrical Tools', 'E-Waste - Electrical Tools'),
+        ('Medical Devices', 'E-Waste - Medical Devices'),
+        ('Paper', 'Paper'),
+        ('Cardboard', 'Paper - Cardboard'),
+        ('Newspapers', 'Paper - Newspapers'),
+        ('Office Paper', 'Paper - Office Paper'),
+        ('Magazines', 'Paper - Magazines'),
+        ('Books', 'Paper - Books'),
+        ('Metal', 'Metal'),
+        ('Aluminum Cans', 'Metal - Aluminum Cans'),
+        ('Steel/Tin Cans', 'Metal - Steel/Tin Cans'),
+        ('Scrap Metal', 'Metal - Scrap Metal'),
+        ('Copper Wire', 'Metal - Copper Wire'),
+        ('Glass', 'Glass'),
+        ('Clear Glass', 'Glass - Clear Glass'),
+        ('Green Glass', 'Glass - Green Glass'),
+        ('Brown Glass', 'Glass - Brown Glass'),
         ('Other', 'Other'),
     )
     
@@ -111,6 +133,7 @@ class PickupRequest(models.Model):
     
     user = models.ForeignKey(Register, on_delete=models.CASCADE)
     waste_type = models.CharField(max_length=50, choices=WASTE_TYPES)
+    sub_waste_type = models.CharField(max_length=50, blank=True, null=True)
     pickup_date = models.DateField()
     address = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')

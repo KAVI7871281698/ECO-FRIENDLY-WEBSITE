@@ -22,16 +22,23 @@
                 {% csrf_token %}
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label for="waste_type">Waste Type</label>
-                        <select name="waste_type" id="waste_type" class="form-input" style="height: 52px;" required>
+                    <div class="form-group" id="mainWasteGroup">
+                        <label for="main_category">Waste Category</label>
+                        <select name="waste_type" id="main_category" class="form-input" style="height: 52px;" required onchange="handleCategoryChange()">
                             <option value="" disabled selected>Select Category</option>
                             <option value="Plastic">Plastic</option>
+                            <option value="Electronic">Electronic (E-Waste)</option>
                             <option value="Paper">Paper</option>
                             <option value="Metal">Metal</option>
                             <option value="Glass">Glass</option>
-                            <option value="Electronic">E-Waste</option>
                             <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="subCategoryGroup" style="display: none;">
+                        <label for="sub_category">Sub-Category</label>
+                        <select name="sub_waste_type" id="sub_category" class="form-input" style="height: 52px;" onchange="handleSubCategoryChange()">
+                            <!-- Will be populated by JS -->
                         </select>
                     </div>
 
@@ -71,7 +78,9 @@
                     <tbody>
                         {% for p in pickups %}
                         <tr>
-                            <td style="font-weight: 700; color: var(--forest-primary);">{{ p.waste_type }}</td>
+                            <td style="font-weight: 700; color: var(--forest-primary);">
+                                {{ p.waste_type }}{% if p.sub_waste_type %} - {{ p.sub_waste_type }}{% endif %}
+                            </td>
                             <td>{{ p.pickup_date|date:"D, d M Y" }}</td>
                             <td>
                                 <span class="status-badge status-{{ p.status|lower }}">{{ p.status }}</span>
@@ -100,5 +109,32 @@
         const today = new Date().toISOString().split('T')[0];
         if (dateInput) dateInput.setAttribute('min', today);
     });
+
+    const subCats = {
+        'Plastic': ['Thermoplastics', 'Thermosetting Plastics', 'Biodegradable Plastics', 'Non-biodegradable Plastics'],
+        'Electronic': ['IT Equipment', 'Telecommunication Devices', 'Consumer Electronics', 'Lighting Equipment', 'Electrical Tools', 'Medical Devices'],
+        'Paper': ['Cardboard', 'Newspapers', 'Office Paper', 'Magazines', 'Books'],
+        'Metal': ['Aluminum Cans', 'Steel/Tin Cans', 'Scrap Metal', 'Copper Wire'],
+        'Glass': ['Clear Glass', 'Green Glass', 'Brown Glass']
+    };
+
+    function handleCategoryChange() {
+        const mainCat = document.getElementById('main_category').value;
+        const subGroup = document.getElementById('subCategoryGroup');
+        const subSelect = document.getElementById('sub_category');
+
+        if (subCats[mainCat]) {
+            subGroup.style.display = 'block';
+            subSelect.innerHTML = '<option value="" disabled selected>Select Sub-Category</option>';
+            subCats[mainCat].forEach(sub => {
+                subSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+            });
+            subSelect.setAttribute('required', 'required');
+        } else {
+            subGroup.style.display = 'none';
+            subSelect.removeAttribute('required');
+            subSelect.innerHTML = "";
+        }
+    }
 </script>
 {% endblock %}

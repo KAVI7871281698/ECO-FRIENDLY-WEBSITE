@@ -500,7 +500,6 @@
     }
 
     @media (max-width: 768px) {
-
         .nav-links,
         .nav-right a:not(.nav-cart-btn) {
             display: none;
@@ -520,8 +519,6 @@
         <li><a href="{% url 'product' %}">Shop</a></li>
 
         <li><a href="{% url 'request_pickup' %}">Recycling Pickup</a></li>
-
-
         {% if user_role == 'Admin' %}
         <li><a href="{% url 'admin_dashboard' %}" style="color: var(--sage-base); font-weight: 700;">📊 Dashboard</a>
         </li>

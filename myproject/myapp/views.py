@@ -529,9 +529,12 @@ def request_pickup(request):
         
         if waste_type and pickup_date and address:
             try:
+                sub_waste_type = request.POST.get('sub_waste_type')
+                
                 PickupRequest.objects.create(
                     user=user,
                     waste_type=waste_type,
+                    sub_waste_type=sub_waste_type,
                     pickup_date=pickup_date,
                     address=address
                 )

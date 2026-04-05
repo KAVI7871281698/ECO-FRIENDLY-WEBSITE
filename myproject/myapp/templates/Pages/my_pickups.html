@@ -26,7 +26,7 @@
                     {% for p in pickups %}
                     <tr>
                         <td>{{ p.created_at|date:"d M Y" }}</td>
-                        <td>{{ p.waste_type }}</td>
+                        <td>{{ p.waste_type }}{% if p.sub_waste_type %} - {{ p.sub_waste_type }}{% endif %}</td>
                         <td>{{ p.pickup_date|date:"d M Y" }}</td>
                         <td>
                             <span class="status-badge status-{{ p.status|lower }}">{{ p.status }}</span>

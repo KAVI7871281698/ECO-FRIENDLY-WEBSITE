@@ -20,7 +20,7 @@
                 </div>
                 
                 <p style="margin: 5px 0;">👤 **User:** {{ p.user.first_name }} {{ p.user.last_name }} ({{ p.user.email }})</p>
-                <p style="margin: 5px 0;">♻️ **Waste Type:** {{ p.waste_type }}</p>
+                <p style="margin: 5px 0;">♻️ **Waste Type:** {{ p.waste_type }}{% if p.sub_waste_type %} ({{ p.sub_waste_type }}){% endif %}</p>
                 <p style="margin: 5px 0;">📅 **Date:** {{ p.pickup_date|date:"D, d M Y" }}</p>
                 <p style="margin: 5px 0;">📍 **Address:** {{ p.address }}</p>
                 <p style="margin: 5px 0; font-size: 0.8rem; color: #888;">⏱️ Requested on: {{ p.created_at|date:"d M Y, H:i" }}</p>
