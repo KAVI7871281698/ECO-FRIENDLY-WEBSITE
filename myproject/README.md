@@ -1,111 +1,106 @@
-# 🌿 Verdana — Eco-Friendly E-commerce & Sustainability Platform
+# 🌿 VERDANA — Eco-Friendly E-commerce & Sustainability Platform
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Django Version](https://img.shields.io/badge/Django-3.2+-forest.svg)](https://www.djangoproject.com/)
+<p align="center">
+  <img src="../docs/images/hero.png" width="800">
+</p>
 
-**Verdana** is a premium sustainability platform designed to empower users to live a greener, more eco-conscious lifestyle. It combines a high-end e-commerce experience with interactive tools for carbon footprint tracking and waste management.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/Django-3.2+-forest?style=for-the-badge&logo=django" alt="Django">
+  <img src="https://img.shields.io/badge/Status-Premium-success?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+</p>
+
+## 🚀 Overview
+**Verdana** is a premium sustainability platform designed to empower users to live a greener, more eco-conscious lifestyle. It seamlessly combines a high-end e-commerce experience with interactive tools for carbon footprint tracking and smart waste management. Built for the modern, environmentally aware consumer, Verdana makes sustainability both accessible and elegant.
 
 ---
 
-## 🎨 Visual Identity
+## 🛠️ Core Modules Showcase
 
-![Verdana Project Mockup](docs/images/hero.png)
-*Modern, minimalist, and nature-inspired UI/UX.*
+<div align="center">
+
+| | |
+| :---: | :---: |
+| <img src="../docs/images/marketplace.png" width="150"><br>**Sustainable Marketplace** | <img src="../docs/images/recycling.png" width="150"><br>**Smart Recycling Program** |
+| A curated collection of eco-certified products, featuring seamless Razorpay checkout and detailed order tracking. | Schedule doorstep pickups for plastic, paper, and electronic waste with a dedicated admin logistics dashboard. |
+| <img src="../docs/images/carbon.png" width="150"><br>**Carbon Calculator** | <img src="../docs/images/ai.png" width="150"><br>**AI-Powered Assistant** |
+| Interactive tool to track and reduce your environmental impact based on lifestyle and consumption habits. | "Verdana Brain" — A context-aware chatbot for sustainability advice and order tracking. |
+
+</div>
 
 ---
 
-## 🚀 Key Features
-
-### 🛒 1. Sustainable Marketplace
-A curated collection of eco-certified products, including cold-pressed oils, botanical serums, and plastic-free bamboo essentials. 
-- **Detailed Order Tracking:** Users can view detailed breakdowns of their orders and individual product specs.
-- **Premium Checkout:** Seamless integration with **Razorpay** for secure payments.
-
-### ♻️ 2. Smart Recycling Program
-- **Pickup Requests:** Users can schedule recycling pickups for plastic, paper, metal, and electronic waste directly to their doorstep.
-- **Admin Logistics:** A dedicated dashboard for admins to manage pickup statuses (Pending, Assigned, Completed).
-
-### 📉 3. Carbon Calculator
-An interactive tool that calculates the user's carbon footprint based on transport, electricity, and plastic usage, providing actionable suggestions to reduce environmental impact.
-
-### 🤖 4. AI-Powered Assistant
-A smart, context-aware chatbot ("Verdana Brain") that helps users:
-- Track order statuses.
-- Explore product ecological impacts.
-- Receive personalized sustainability advice.
+## ✨ Premium Features
+- **🤖 Verdana Brain**: AI-integrated assistant powered by Google Gemini for personalized eco-advice.
+- **🔐 Secure Payments**: Fully integrated **Razorpay** gateway for a smooth and safe shopping experience.
+- **♻️ Waste Logistics**: End-to-end management of recycling requests, from user scheduling to admin assignment.
+- **📊 Impact Analytics**: Real-time tracking of the user's positive environmental contribution.
+- **📱 Glassmorphic UI**: A modern, nature-inspired design system with smooth transitions and responsive layouts.
+- **🌲 Eco-Certified Inventory**: Rigorous management of products with detailed sustainability specifications.
 
 ---
 
 ## 📊 Administrative Management
+Verdana provides a feature-rich administrative suite for business owners to oversee operations efficiently.
 
-![Admin Dashboard Preview](docs/images/admin.png)
-*Elegant and feature-rich management interface.*
-
-- **Inventory Control:** Add, update, and manage product listings with thumbnail support and categorization.
-- **Real-time Stats:** Track total revenue, order volume, and user growth at a glance.
-- **Detailed Order Review:** Interactive table allowing admins to inspect full order details and customer shipping info.
-
----
-
-## 🛠️ Technology Stack
-
-| Component | Technology |
-| :--- | :--- |
-| **Backend** | Django (Python) |
-| **Database** | SQLite3 (Development / Production) |
-| **Styling** | Vanilla CSS (Glassmorphism & Modern UI) |
-| **Frontend** | Django Templates & Vanilla JavaScript |
-| **AI Integration** | Gemini API / Google Generative AI |
-| **Payment Gateway** | Razorpay Integration |
+- **Inventory Control**: Real-time management of product listings, categories, and stock levels.
+- **Order Insights**: Detailed breakdown of sales, shipping info, and revenue analytics.
+- **Recycling Dashboard**: Centralized hub to manage pickup requests and monitor waste diversion metrics.
+- **User Management**: Oversight of user profiles, authentication, and security.
 
 ---
 
-## 🌲 Features at a Glance
+## 💻 Technical Excellence
+Built with a focus on performance, scalability, and modern web standards.
 
-![Features Showcase](docs/images/features.png)
-
-- **User Authentication:** Secure sign-in/sign-up with profile image management.
-- **Responsive Design:** Optimized for Desktop, Tablet, and Mobile.
-- **Impact Tracking:** Every purchase and pickup is tracked to visualize the user's positive impact on the planet.
+- **Backend**: **Django (Python)** providing a robust and secure foundation.
+- **Database**: Efficient **SQLite3** configuration for reliable data persistence.
+- **AI Integration**: **Google Generative AI (Gemini)** for intelligent conversational capabilities.
+- **Frontend**: Custom **Vanilla CSS** design system utilizing modern Glassmorphism and CSS variables.
+- **Payment Gateway**: **Razorpay** for industry-standard financial transactions.
+- **Architecture**: Clean, modular code following the MVT pattern for easy maintainability.
 
 ---
 
-## 📁 Installation & Setup
+## ⚙️ Getting Started
 
-1. **Clone the repository:**
+### 📋 Prerequisites
+- Python 3.9+
+- Pip & Virtualenv
+- Razorpay API Keys
+- Gemini API Key
+
+### 🚀 Installation
+1. **Clone the repository**
    ```bash
    git clone https://github.com/your-username/eco-friendly-verdana.git
    cd eco-friendly-verdana
    ```
-
-2. **Install dependencies:**
+2. **Setup Environment**
    ```bash
+   python -m venv my_venv
+   source my_venv/bin/activate  # On Windows: my_venv\Scripts\activate
    pip install -r requirements.txt
    ```
-
-3. **Configure Settings:**
-   - Update `settings.py` with your **Razorpay Key ID/Secret** and **Gemini API Key**.
-
-4. **Run Migrations:**
+3. **Configure API Keys**
+   - Update `settings.py` with your credentials.
+4. **Run Migrations & Start Server**
    ```bash
-   python manage.py makemigrations
    python manage.py migrate
-   ```
-
-5. **Start the Development Server:**
-   ```bash
    python manage.py runserver
    ```
 
 ---
 
-## 📜 Contributing
-We welcome contributions that help push the mission of sustainability forward! Please fork this repository and submit a pull request with your enhancements.
+## 🤝 Support & Contact
+We welcome contributions to help push the mission of sustainability forward!
+
+📧 **kavipriyan292004@gmail.com** | 🌐 **[Verdana Portfolio](https://kaviportfilio.netlify.app/)**
 
 ---
+<p align="center">
+  <b>Verdana: Vote for a Greener Future. 🌍</b><br>
+  Developed with ❤️ for a Sustainable Tomorrow
+</p>
 
-## ✉️ Contact & Support
-If you have questions, feedback, or want to partner with **Verdana**, please reach out to our team via the [Contact Page](#).
-
-**Verdana: Vote for a Greener Future. 🌍**
